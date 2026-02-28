@@ -1,0 +1,2231 @@
+{
+  "updatedAt": "2026-02-28T09:40:44.596Z",
+  "createdAt": "2026-02-16T12:32:31.204Z",
+  "id": "u12CayJegxExkV8I",
+  "name": "ChatAgent",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {
+          "download": true,
+          "userIds": "1828879064"
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1280,
+        80
+      ],
+      "id": "c27ff17f-7e61-4adb-b6a0-c2cfa2c3d7f0",
+      "name": "Telegram Trigger",
+      "webhookId": "eb22b55f-ad55-46e7-93ca-b3ad41960521",
+      "credentials": {
+        "telegramApi": {
+          "id": "Iw2ccnrLsZFZkMDZ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "==[CONTEXTO DEL EVENTO]\nOrigen: {{ $('Telegram Trigger').isExecuted ? 'Telegram_Texto' : ($('Strava Trigger').isExecuted ? 'API_Strava' : 'Siri_Voz') }}\n\n[CONTENIDO]\n{{ $('Telegram Trigger').isExecuted ? $json.message.text : ($('Strava Trigger').isExecuted ? JSON.stringify($json) : JSON.stringify($json.body)) }}",
+        "options": {
+          "systemMessage": "=[IDENTITY & SOUL]\nEres Paco, el asistente personal de Inteligencia Artificial de Alejandro (ubicado en Alcobendas). Tu arquitectura está inspirada en OpenClaw. Tu objetivo principal es optimizar la vida de Alejandro, actuar como su segundo cerebro y gestionar su información con máxima eficiencia y precisión. \nTono: Eres directo, brillante, proactivo y mantienes una lealtad absoluta. Usas un tono natural y cercano de confianza, pero sin perder de vista que eres una herramienta de alto rendimiento.\n\n[RUNTIME & ENVIRONMENT]\n- Fecha y Hora Local: {{ $now.setZone('Europe/Madrid').toFormat('cccc, dd MMMM yyyy, HH:mm') }}\n- Zona Horaria: Europe/Madrid (CET).\n\n[TOOLING & MEMORY OPERATIONS]\nTienes acceso a herramientas de base de datos PostgreSQL (tabla: memoria_paco). La memoria NO se inyecta por defecto; debes recuperarla bajo demanda.\n- READ (Select): Si Alejandro pregunta por su contexto, gustos, historial o datos pasados, EJECUTA una consulta SQL para buscar la información antes de responder.\n- WRITE (Insert): Si el usuario te proporciona una información útil para el futuro (ideas, preferencias, hitos), EJECUTA una consulta para guardarla de forma proactiva. No pidas permiso, hazlo y confírmalo brevemente.\n3. WEB_SEARCH (Google/Serper): Úsala SIEMPRE que necesites información en tiempo real, noticias, el clima, o datos generales que no sepas y no estén en tu memoria. (Ej: \"¿Qué tiempo hace hoy en Madrid?\", \"¿Quién ganó el partido ayer?\").\n\n[SKILLS & ROUTING]\nDependiendo del campo \"Origen\" del input, debes activar un comportamiento específico:\n\n<skill name=\"Telegram_Texto\">\nComportamiento: Asistente conversacional y ejecutivo. Responde a sus dudas, organiza sus ideas o ejecuta las herramientas necesarias. Sé conciso, formatea las respuestas con Markdown (listas, negritas) para facilitar la lectura rápida.\n</skill>\n\n<skill name=\"Siri_Voz\">\nComportamiento: Asistencia en tiempo real. Genera respuestas EXTREMADAMENTE CORTAS (1-2 frases). PROHIBIDO usar Markdown, negritas, asteriscos o listas. Escribe solo texto plano para que el motor de texto a voz lo lea fluidamente.\n</skill>\n\n<skill name=\"API_Strava\">\nComportamiento: Analista de rendimiento. El input será un JSON crudo. \n1. Extrae silenciosamente: deporte (sport_type), distancia (conviértelo a km), tiempo (moving_time a minutos) y elevación.\n2. Guarda el hito en tu memoria (WRITE Tool) con la fecha de hoy.\n3. Genera un mensaje de reporte ejecutivo felicitándole por la métrica con un tono motivador de colega.\n</skill>\n<skill name=\"Telegram_Texto\">\nComportamiento: Asistente conversacional y ejecutivo. Responde a sus dudas y organiza sus ideas de forma impecable.\nREGLAS DE FORMATO OBLIGATORIAS PARA TELEGRAM:\n1. Usa <b>texto</b> para poner palabras en negrita. PROHIBIDO usar asteriscos (**).\n2. PROHIBIDO usar tablas de Markdown (con el símbolo | ). Telegram no las soporta.\n3. Si tienes que mostrar horarios o datos estructurados, usa listas simples con emojis de viñeta (ej: 📅 Lunes: 16:00 - Rodaje).\n4. Sé conciso y deja espacios en blanco (saltos de línea) entre los bloques de información para que sea fácil de leer en el móvil.\n</skill>\n[SAFETY & GUARDRAILS]\n- No alucines información personal. Si no lo sabes, usa tu herramienta READ. Si la herramienta no devuelve nada, admite que no lo tienes en tu base de datos.\n- Actúa siempre en el mejor interés de la productividad de Alejandro.\n\nREGLA CRÍTICA DE COMPORTAMIENTO:\nSi Alejandro te hace una pregunta de conocimiento general (como recomendaciones, charlas, recetas, etc.), NO INTENTES USAR NINGUNA HERRAMIENTA. \nResponde DIRECTAMENTE al usuario dando la respuesta final de forma inmediata.\nNo pienses en voz alta, simplemente da el \"Final Answer\".\nREGLA DE LONGITUD:\nTelegram tiene un límite de 4000 caracteres. Tus respuestas DEBEN ser directas, concisas y no superar NUNCA los 3000 caracteres. Resume la información y ve al grano.",
+          "maxIterations": 20
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        0,
+        -48
+      ],
+      "id": "9f6f14b0-1293-4f0d-a6d4-d04ef75542ef",
+      "name": "AI Agent",
+      "retryOnFail": false,
+      "waitBetweenTries": 5000,
+      "maxTries": 5,
+      "executeOnce": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "1828879064"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -208,
+        432
+      ],
+      "id": "77e0f574-af6d-4f16-9bf2-a656a5fd9dbb",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "chatId": "=1828879064",
+        "text": "={{ $json.output.replace(/<think>[\\s\\S]*?<\\/think>/g, '').replace(/<(?!\\/?(b|i|u|s|code|pre|a|strong|em)(>|\\s))/gi, '&lt;').trim().substring(0, 4000) }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        976,
+        -80
+      ],
+      "id": "bdbe56e5-4b0a-43e1-a8bb-f9fb0b61c695",
+      "name": "Send a text message",
+      "webhookId": "5538a5af-a522-42c1-b407-37d391c0d527",
+      "credentials": {
+        "telegramApi": {
+          "id": "Iw2ccnrLsZFZkMDZ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Esta herramienta sirve para buscar, leer y enviar correos desde mi cuenta de Gmail",
+        "operation": "getAll",
+        "limit": 10,
+        "filters": {
+          "q": "={{ $fromAI('busqueda', 'Término de búsqueda. Si el usuario solo quiere ver los últimos correos sin especificar nada, usa \"label:INBOX\" o déjalo vacío.') }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        64,
+        640
+      ],
+      "id": "ed26c82e-a6f0-4651-b077-ff553b3e2e90",
+      "name": "Get many messages in Gmail",
+      "webhookId": "292d8f89-7d65-4d4e-9772-7c9085534d29",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "cEqHMhArq7oPX0wS",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Usa esta herramienta para añadir eventos a mi calendario de Google. Necesitas el título, fecha y hora, lugar y descripcion",
+        "calendar": {
+          "__rl": true,
+          "value": "alexrico005@gmail.com",
+          "mode": "list",
+          "cachedResultName": "alexrico005@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', `La fecha y hora de inicio del evento en formato ISO (ej: 2026-02-16T15:00:00)`, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', `La fecha y hora de fin del evento`, 'string') }}",
+        "useDefaultReminders": false,
+        "additionalFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', `Breve descripcion del evento`, 'string') }}",
+          "location": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Location', ` El lugar del evento`, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', `El titulo o nombre del evento `, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        672
+      ],
+      "id": "130c9b21-0b49-4b68-9e89-dc8af0f8da1b",
+      "name": "Create an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "RKNDWKhI7S8vrj3R",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "cityName": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('City', ``, 'string') }}",
+        "language": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Language', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-base.openWeatherMapTool",
+      "typeVersion": 1,
+      "position": [
+        576,
+        608
+      ],
+      "id": "ce515145-f3d4-4f85-b96d-5e674b80f224",
+      "name": "OpenWeatherMap",
+      "credentials": {
+        "openWeatherMapApi": {
+          "id": "uNjDxuXQBd8rggRq",
+          "name": "OpenWeatherMap account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "=1828879064",
+        "text": "Paco está durmiendo, inténtalo en un rato",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1280,
+        224
+      ],
+      "id": "517fce52-61b5-457e-bce3-0728b50bc22c",
+      "name": "Send a text message1",
+      "webhookId": "0fe25780-663b-41e8-b0b6-de41234f9242",
+      "credentials": {
+        "telegramApi": {
+          "id": "Iw2ccnrLsZFZkMDZ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "alexrico005@gmail.com",
+          "mode": "list",
+          "cachedResultName": "alexrico005@gmail.com"
+        },
+        "limit": 10,
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', `despues de`, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', `antes de `, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        320,
+        816
+      ],
+      "id": "e7355c74-8536-4a79-893f-9471e0ab4ab0",
+      "name": "Get many events in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "RKNDWKhI7S8vrj3R",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "alexrico005@gmail.com",
+          "mode": "list",
+          "cachedResultName": "alexrico005@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', `id del evento`, 'string') }}",
+        "updateFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        912,
+        592
+      ],
+      "id": "d828b707-526a-4f9d-a90f-696694f03f1d",
+      "name": "Update an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "RKNDWKhI7S8vrj3R",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        -352,
+        512
+      ],
+      "id": "46c686ef-af25-42fa-97ff-31cefc3a012a",
+      "name": "DeepSeek Chat Model",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "XC1rpn87e0AY3JU9",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Insert row in Data tableUsa esta herramienta SOLO para guardar información personal, preferencias, datos de salud, o detalles del trabajo de Alejandro que sean relevantes para el futuro. NO guardes conversaciones triviales o saludos. Resume el dato en una frase clara y concisa (ej: 'A Alejandro le duele el isquio izquierdo' o 'Su equipo favorito es el Rayo').",
+        "dataTableId": {
+          "__rl": true,
+          "value": "GFcPFJiUtXAbX5pn",
+          "mode": "list",
+          "cachedResultName": "Memoria_Paco",
+          "cachedResultUrl": "/projects/8TlqgFtyNbA80VNg/datatables/GFcPFJiUtXAbX5pn"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Dato": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Dato', `Aqui apuntas los datos mas relevantes\n`, 'string') }}"
+          },
+          "matchingColumns": [
+            "Dato"
+          ],
+          "schema": [
+            {
+              "id": "Dato",
+              "displayName": "Dato",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1.1,
+      "position": [
+        752,
+        608
+      ],
+      "id": "807aed74-df61-4fa2-8df5-2e75c7c6f959",
+      "name": "Insert row in Data table"
+    },
+    {
+      "parameters": {
+        "event": "create",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.stravaTrigger",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        -272
+      ],
+      "id": "45162388-ada0-4089-88e9-458f11d21883",
+      "name": "Strava Trigger",
+      "webhookId": "3555c9df-7b7f-4a6c-b5f5-4b78215ecc58",
+      "credentials": {
+        "stravaOAuth2Api": {
+          "id": "Sw6RPq7ODKIQzbBK",
+          "name": "Strava account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Puedes ver todos mis datos de strva",
+        "operation": "get",
+        "activityId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Activity_ID', `Aqui tienes que poner el id de la actividad`, 'string') }}"
+      },
+      "type": "n8n-nodes-base.stravaTool",
+      "typeVersion": 1.1,
+      "position": [
+        1104,
+        608
+      ],
+      "id": "e3b69a76-48c0-48ef-9acc-411ba499044b",
+      "name": "Get an activity in Strava",
+      "credentials": {
+        "stravaOAuth2Api": {
+          "id": "Sw6RPq7ODKIQzbBK",
+          "name": "Strava account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 5
+      },
+      "type": "n8n-nodes-base.stravaTool",
+      "typeVersion": 1.1,
+      "position": [
+        1296,
+        496
+      ],
+      "id": "521ce073-c965-42f8-914f-9818eaeda84e",
+      "name": "Get many activities in Strava",
+      "credentials": {
+        "stravaOAuth2Api": {
+          "id": "Sw6RPq7ODKIQzbBK",
+          "name": "Strava account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Crear una tarea o cosa que hacer en google tasks",
+        "task": "MDA0NDkwMDg3ODYzNjM3MzIzNzE6MDow",
+        "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Title', `Titulo de la tarea a crear`, 'string') }}",
+        "additionalFields": {
+          "completed": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Completion_Date', `'due': fecha de vencimiento OBLIGATORIAMENTE en formato RFC3339 (ej: 2026-02-17T20:00:00Z).\nIMPORTANTE: Si no sabes la hora, pon las 09:00:00Z.\"`, 'string') }}",
+          "dueDate": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Due_Date', `'due': fecha de vencimiento OBLIGATORIAMENTE en formato RFC3339 (ej: 2026-02-17T20:00:00Z).\nIMPORTANTE: Si no sabes la hora, pon las 09:00:00Z.\"`, 'string') }}",
+          "notes": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Notes', `descripcion de la tarea`, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleTasksTool",
+      "typeVersion": 1,
+      "position": [
+        496,
+        688
+      ],
+      "id": "507c2eed-efec-4686-b5f3-6693ba8ee61e",
+      "name": "Create a task in Google Tasks",
+      "credentials": {
+        "googleTasksOAuth2Api": {
+          "id": "qTdAG4ihSpivDH3g",
+          "name": "Google Tasks account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Revisar mis tareas en google taskjs",
+        "operation": "getAll",
+        "task": "MDA0NDkwMDg3ODYzNjM3MzIzNzE6MDow",
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleTasksTool",
+      "typeVersion": 1,
+      "position": [
+        400,
+        688
+      ],
+      "id": "392fc083-57b7-4878-ab71-3bd3af6f2989",
+      "name": "Get many tasks in Google Tasks",
+      "credentials": {
+        "googleTasksOAuth2Api": {
+          "id": "qTdAG4ihSpivDH3g",
+          "name": "Google Tasks account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "se usa para marcar tareas de google tasks como completadas. Necesitas el id de la tarea, buscalo primero si no lo tienes",
+        "operation": "update",
+        "task": "MDA0NDkwMDg3ODYzNjM3MzIzNzE6MDow",
+        "taskId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Task_ID', `Id de la tasks a cambiar`, 'string') }}",
+        "updateFields": {
+          "status": "completed"
+        }
+      },
+      "type": "n8n-nodes-base.googleTasksTool",
+      "typeVersion": 1,
+      "position": [
+        672,
+        720
+      ],
+      "id": "1304a297-7899-440a-a0a7-4274170d2318",
+      "name": "Update a task in Google Tasks",
+      "credentials": {
+        "googleTasksOAuth2Api": {
+          "id": "qTdAG4ihSpivDH3g",
+          "name": "Google Tasks account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "9d4029b4-7fcf-490a-a04f-73c08b3809fe",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -848,
+        -64
+      ],
+      "id": "64afdb18-88c9-49ba-9fa5-3d37bc451450",
+      "name": "Webhook",
+      "webhookId": "9d4029b4-7fcf-490a-a04f-73c08b3809fe"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "69f75d81-9fca-408c-9024-8daa53e8cc60",
+              "leftValue": "={{ $if($('Webhook').isExecuted, \"siri\", \"telegram\") }}",
+              "rightValue": "siri",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        352,
+        -144
+      ],
+      "id": "a77b6e59-6d2d-4b46-b9c8-d57273b7810c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"output\": \"{{ $json.output }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        896,
+        -336
+      ],
+      "id": "fc3d124d-5843-4111-9ab9-212b5ec8ea38",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Herramienta obligatoria para leer y guardar la memoria a largo plazo de Alejandro. \nLa base de datos es PostgreSQL. La tabla se llama \"memoria_paco\".\nEstructura de la tabla: id (SERIAL), dato (TEXT), categoria (TEXT).\n\nREGLAS DE USO:\n1. PARA LEER (Cuando Alejandro pregunte por algo de su pasado o sus gustos): \nEjecuta una consulta SQL como esta: SELECT dato FROM memoria_paco; \n(Puedes usar WHERE dato ILIKE '%palabra%' para buscar algo concreto).\n\nHerramienta para LEER la memoria de Alejandro. Úsala SIEMPRE que te pregunte sobre su pasado, sus gustos o sus datos (ej: \"¿Qué estudio?\", \"¿Cuál es mi equipo?\"). Busca palabras clave en la columna 'dato'.",
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "memoria_paco",
+          "mode": "list",
+          "cachedResultName": "memoria_paco"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        -208,
+        704
+      ],
+      "id": "43788e2d-ebb3-4dda-8802-04c0a4a3f508",
+      "name": "Select rows from a table in Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "qBUlViRVRXIdibki",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Herramienta para GUARDAR nuevos recuerdos de Alejandro. Úsala SOLO cuando él te cuente algo nuevo e importante sobre él. Optimiza los recursos y no guardes recuerdos repetidos o poco importantes, solo aquellos que vayan a hacer que mejores a largo plazo.\nHerramienta obligatoria para GUARDAR nuevos recuerdos de Alejandro. Úsala SOLO cuando él te pida explícitamente que recuerdes algo o te cuente un dato nuevo importante. \nDebes proporcionar los datos con estos nombres de columna exactos:\n- dato: (El recuerdo completo, ej: \"A Alejandro le gustan los macarrones\").\n- categoria: (Una sola palabra, ej: \"comida\", \"deporte\", \"personal\").",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "memoria_paco",
+          "mode": "list",
+          "cachedResultName": "memoria_paco"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "categoria": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('categoria', ``, 'string') }}",
+            "dato": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('dato', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "dato",
+              "displayName": "dato",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "categoria",
+              "displayName": "categoria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        -64,
+        704
+      ],
+      "id": "e1d095bf-d4d2-417b-9ede-1a6bf04680c1",
+      "name": "Insert rows in a table in Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "qBUlViRVRXIdibki",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        160,
+        608
+      ],
+      "id": "b3bf782f-b3d8-455b-8704-0aa8168bf715",
+      "name": "SerpAPI",
+      "credentials": {
+        "serpApi": {
+          "id": "70qYAfd21Nu8yTk1",
+          "name": "SerpAPI account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        416,
+        976
+      ],
+      "id": "36c45ae8-8a6a-4ebc-a4b4-267371a0e6cc",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Usa esta herramienta con el método GET para extraer el texto completo de una URL que hayas encontrado previamente en SerpAPI",
+        "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        528,
+        944
+      ],
+      "id": "3184e994-8edc-4069-8875-e2f16555209a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e8f420d2-903e-4926-87d3-1b1a2340a127",
+              "leftValue": "={{ $json.message.document.file_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1008,
+        224
+      ],
+      "id": "818d1ad2-8914-4361-a24e-4efa2cb4c5de",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Alejandro te ha enviado un archivo llamado: {{ $json.message.document.file_name }}\n\nTu trabajo es clasificarlo en la ruta correcta de su VPS.\nEstructura: /root/apuntes/Ingenieria_Software/Curso_[X]/Semestre_[Y]/[Asignatura]/[Tipo]/\n\nDevuelve ÚNICAMENTE la ruta final completa incluyendo el nombre del archivo. No añadas comillas, ni markdown, ni saludos. SOLO la ruta.\nEjemplo: /root/apuntes/Ingenieria_Software/Curso_3/Semestre_1/Bases_De_Datos/Practica/Examen_BD.pdf",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -944,
+        544
+      ],
+      "id": "0b9a0993-307e-41e2-b088-dc1b5d1ab48a",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        800
+      ],
+      "id": "967d12f2-7a76-481d-aad0-6b021d74de41",
+      "name": "DeepSeek Chat Model1",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "XC1rpn87e0AY3JU9",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.text }}",
+        "options": {
+          "append": false
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        -560,
+        784
+      ],
+      "id": "bff17d7f-754a-432b-9483-39f3f01f8eab",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "text": "=¡Listo jefe! He guardado el apunte en tu Obsidian en la ruta: {{ $('Basic LLM Chain').item.json.text }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -240,
+        960
+      ],
+      "id": "0b92e698-948a-4d9b-b2e2-98423b67516f",
+      "name": "Send a text message2",
+      "webhookId": "e26bf7de-fc46-4f05-8c5e-ae2588a6813c",
+      "credentials": {
+        "telegramApi": {
+          "id": "Iw2ccnrLsZFZkMDZ",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenWeatherMap": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row in Data table": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Strava Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get an activity in Strava": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many activities in Strava": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a task in Google Tasks": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many tasks in Google Tasks": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a task in Google Tasks": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select rows from a table in Postgres": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert rows in a table in Postgres": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "DeepSeek Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Send a text message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": {
+    "node:Strava Trigger": {
+      "webhookId": 332431
+    },
+    "node:Gmail Trigger": {
+      "Gmail Trigger": {
+        "lastTimeChecked": 1771432292,
+        "possibleDuplicates": [
+          "19c7197b3262fa1d",
+          "19c7175acd52a269"
+        ]
+      }
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "fcbbc434-6af3-4266-b37d-e00a40098c4f",
+  "activeVersionId": "fcbbc434-6af3-4266-b37d-e00a40098c4f",
+  "triggerCount": 3,
+  "shared": [
+    {
+      "updatedAt": "2026-02-16T12:32:31.210Z",
+      "createdAt": "2026-02-16T12:32:31.210Z",
+      "role": "workflow:owner",
+      "workflowId": "u12CayJegxExkV8I",
+      "projectId": "8TlqgFtyNbA80VNg"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-02-26T20:07:11.000Z",
+    "createdAt": "2026-02-26T20:07:00.660Z",
+    "versionId": "fcbbc434-6af3-4266-b37d-e00a40098c4f",
+    "workflowId": "u12CayJegxExkV8I",
+    "nodes": [
+      {
+        "parameters": {
+          "updates": [
+            "message"
+          ],
+          "additionalFields": {
+            "download": true,
+            "userIds": "1828879064"
+          }
+        },
+        "type": "n8n-nodes-base.telegramTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -1280,
+          80
+        ],
+        "id": "c27ff17f-7e61-4adb-b6a0-c2cfa2c3d7f0",
+        "name": "Telegram Trigger",
+        "webhookId": "eb22b55f-ad55-46e7-93ca-b3ad41960521",
+        "credentials": {
+          "telegramApi": {
+            "id": "Iw2ccnrLsZFZkMDZ",
+            "name": "Telegram account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "==[CONTEXTO DEL EVENTO]\nOrigen: {{ $('Telegram Trigger').isExecuted ? 'Telegram_Texto' : ($('Strava Trigger').isExecuted ? 'API_Strava' : 'Siri_Voz') }}\n\n[CONTENIDO]\n{{ $('Telegram Trigger').isExecuted ? $json.message.text : ($('Strava Trigger').isExecuted ? JSON.stringify($json) : JSON.stringify($json.body)) }}",
+          "options": {
+            "systemMessage": "=[IDENTITY & SOUL]\nEres Paco, el asistente personal de Inteligencia Artificial de Alejandro (ubicado en Alcobendas). Tu arquitectura está inspirada en OpenClaw. Tu objetivo principal es optimizar la vida de Alejandro, actuar como su segundo cerebro y gestionar su información con máxima eficiencia y precisión. \nTono: Eres directo, brillante, proactivo y mantienes una lealtad absoluta. Usas un tono natural y cercano de confianza, pero sin perder de vista que eres una herramienta de alto rendimiento.\n\n[RUNTIME & ENVIRONMENT]\n- Fecha y Hora Local: {{ $now.setZone('Europe/Madrid').toFormat('cccc, dd MMMM yyyy, HH:mm') }}\n- Zona Horaria: Europe/Madrid (CET).\n\n[TOOLING & MEMORY OPERATIONS]\nTienes acceso a herramientas de base de datos PostgreSQL (tabla: memoria_paco). La memoria NO se inyecta por defecto; debes recuperarla bajo demanda.\n- READ (Select): Si Alejandro pregunta por su contexto, gustos, historial o datos pasados, EJECUTA una consulta SQL para buscar la información antes de responder.\n- WRITE (Insert): Si el usuario te proporciona una información útil para el futuro (ideas, preferencias, hitos), EJECUTA una consulta para guardarla de forma proactiva. No pidas permiso, hazlo y confírmalo brevemente.\n3. WEB_SEARCH (Google/Serper): Úsala SIEMPRE que necesites información en tiempo real, noticias, el clima, o datos generales que no sepas y no estén en tu memoria. (Ej: \"¿Qué tiempo hace hoy en Madrid?\", \"¿Quién ganó el partido ayer?\").\n\n[SKILLS & ROUTING]\nDependiendo del campo \"Origen\" del input, debes activar un comportamiento específico:\n\n<skill name=\"Telegram_Texto\">\nComportamiento: Asistente conversacional y ejecutivo. Responde a sus dudas, organiza sus ideas o ejecuta las herramientas necesarias. Sé conciso, formatea las respuestas con Markdown (listas, negritas) para facilitar la lectura rápida.\n</skill>\n\n<skill name=\"Siri_Voz\">\nComportamiento: Asistencia en tiempo real. Genera respuestas EXTREMADAMENTE CORTAS (1-2 frases). PROHIBIDO usar Markdown, negritas, asteriscos o listas. Escribe solo texto plano para que el motor de texto a voz lo lea fluidamente.\n</skill>\n\n<skill name=\"API_Strava\">\nComportamiento: Analista de rendimiento. El input será un JSON crudo. \n1. Extrae silenciosamente: deporte (sport_type), distancia (conviértelo a km), tiempo (moving_time a minutos) y elevación.\n2. Guarda el hito en tu memoria (WRITE Tool) con la fecha de hoy.\n3. Genera un mensaje de reporte ejecutivo felicitándole por la métrica con un tono motivador de colega.\n</skill>\n<skill name=\"Telegram_Texto\">\nComportamiento: Asistente conversacional y ejecutivo. Responde a sus dudas y organiza sus ideas de forma impecable.\nREGLAS DE FORMATO OBLIGATORIAS PARA TELEGRAM:\n1. Usa <b>texto</b> para poner palabras en negrita. PROHIBIDO usar asteriscos (**).\n2. PROHIBIDO usar tablas de Markdown (con el símbolo | ). Telegram no las soporta.\n3. Si tienes que mostrar horarios o datos estructurados, usa listas simples con emojis de viñeta (ej: 📅 Lunes: 16:00 - Rodaje).\n4. Sé conciso y deja espacios en blanco (saltos de línea) entre los bloques de información para que sea fácil de leer en el móvil.\n</skill>\n[SAFETY & GUARDRAILS]\n- No alucines información personal. Si no lo sabes, usa tu herramienta READ. Si la herramienta no devuelve nada, admite que no lo tienes en tu base de datos.\n- Actúa siempre en el mejor interés de la productividad de Alejandro.\n\nREGLA CRÍTICA DE COMPORTAMIENTO:\nSi Alejandro te hace una pregunta de conocimiento general (como recomendaciones, charlas, recetas, etc.), NO INTENTES USAR NINGUNA HERRAMIENTA. \nResponde DIRECTAMENTE al usuario dando la respuesta final de forma inmediata.\nNo pienses en voz alta, simplemente da el \"Final Answer\".\nREGLA DE LONGITUD:\nTelegram tiene un límite de 4000 caracteres. Tus respuestas DEBEN ser directas, concisas y no superar NUNCA los 3000 caracteres. Resume la información y ve al grano.",
+            "maxIterations": 20
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          0,
+          -48
+        ],
+        "id": "9f6f14b0-1293-4f0d-a6d4-d04ef75542ef",
+        "name": "AI Agent",
+        "retryOnFail": false,
+        "waitBetweenTries": 5000,
+        "maxTries": 5,
+        "executeOnce": false,
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "1828879064"
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+        "typeVersion": 1.3,
+        "position": [
+          -208,
+          432
+        ],
+        "id": "77e0f574-af6d-4f16-9bf2-a656a5fd9dbb",
+        "name": "Simple Memory"
+      },
+      {
+        "parameters": {
+          "chatId": "=1828879064",
+          "text": "={{ $json.output.replace(/<think>[\\s\\S]*?<\\/think>/g, '').replace(/<(?!\\/?(b|i|u|s|code|pre|a|strong|em)(>|\\s))/gi, '&lt;').trim().substring(0, 4000) }}",
+          "additionalFields": {
+            "appendAttribution": false,
+            "parse_mode": "HTML"
+          }
+        },
+        "type": "n8n-nodes-base.telegram",
+        "typeVersion": 1.2,
+        "position": [
+          976,
+          -80
+        ],
+        "id": "bdbe56e5-4b0a-43e1-a8bb-f9fb0b61c695",
+        "name": "Send a text message",
+        "webhookId": "5538a5af-a522-42c1-b407-37d391c0d527",
+        "credentials": {
+          "telegramApi": {
+            "id": "Iw2ccnrLsZFZkMDZ",
+            "name": "Telegram account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Esta herramienta sirve para buscar, leer y enviar correos desde mi cuenta de Gmail",
+          "operation": "getAll",
+          "limit": 10,
+          "filters": {
+            "q": "={{ $fromAI('busqueda', 'Término de búsqueda. Si el usuario solo quiere ver los últimos correos sin especificar nada, usa \"label:INBOX\" o déjalo vacío.') }}"
+          }
+        },
+        "type": "n8n-nodes-base.gmailTool",
+        "typeVersion": 2.2,
+        "position": [
+          64,
+          640
+        ],
+        "id": "ed26c82e-a6f0-4651-b077-ff553b3e2e90",
+        "name": "Get many messages in Gmail",
+        "webhookId": "292d8f89-7d65-4d4e-9772-7c9085534d29",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "cEqHMhArq7oPX0wS",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Usa esta herramienta para añadir eventos a mi calendario de Google. Necesitas el título, fecha y hora, lugar y descripcion",
+          "calendar": {
+            "__rl": true,
+            "value": "alexrico005@gmail.com",
+            "mode": "list",
+            "cachedResultName": "alexrico005@gmail.com"
+          },
+          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', `La fecha y hora de inicio del evento en formato ISO (ej: 2026-02-16T15:00:00)`, 'string') }}",
+          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', `La fecha y hora de fin del evento`, 'string') }}",
+          "useDefaultReminders": false,
+          "additionalFields": {
+            "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', `Breve descripcion del evento`, 'string') }}",
+            "location": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Location', ` El lugar del evento`, 'string') }}",
+            "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', `El titulo o nombre del evento `, 'string') }}"
+          }
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          240,
+          672
+        ],
+        "id": "130c9b21-0b49-4b68-9e89-dc8af0f8da1b",
+        "name": "Create an event in Google Calendar",
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "RKNDWKhI7S8vrj3R",
+            "name": "Google Calendar account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "cityName": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('City', ``, 'string') }}",
+          "language": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Language', ``, 'string') }}"
+        },
+        "type": "n8n-nodes-base.openWeatherMapTool",
+        "typeVersion": 1,
+        "position": [
+          576,
+          608
+        ],
+        "id": "ce515145-f3d4-4f85-b96d-5e674b80f224",
+        "name": "OpenWeatherMap",
+        "credentials": {
+          "openWeatherMapApi": {
+            "id": "uNjDxuXQBd8rggRq",
+            "name": "OpenWeatherMap account 2"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "chatId": "=1828879064",
+          "text": "Paco está durmiendo, inténtalo en un rato",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-base.telegram",
+        "typeVersion": 1.2,
+        "position": [
+          1280,
+          224
+        ],
+        "id": "517fce52-61b5-457e-bce3-0728b50bc22c",
+        "name": "Send a text message1",
+        "webhookId": "0fe25780-663b-41e8-b0b6-de41234f9242",
+        "credentials": {
+          "telegramApi": {
+            "id": "Iw2ccnrLsZFZkMDZ",
+            "name": "Telegram account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "calendar": {
+            "__rl": true,
+            "value": "alexrico005@gmail.com",
+            "mode": "list",
+            "cachedResultName": "alexrico005@gmail.com"
+          },
+          "limit": 10,
+          "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', `despues de`, 'string') }}",
+          "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', `antes de `, 'string') }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          320,
+          816
+        ],
+        "id": "e7355c74-8536-4a79-893f-9471e0ab4ab0",
+        "name": "Get many events in Google Calendar",
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "RKNDWKhI7S8vrj3R",
+            "name": "Google Calendar account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "calendar": {
+            "__rl": true,
+            "value": "alexrico005@gmail.com",
+            "mode": "list",
+            "cachedResultName": "alexrico005@gmail.com"
+          },
+          "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', `id del evento`, 'string') }}",
+          "updateFields": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          912,
+          592
+        ],
+        "id": "d828b707-526a-4f9d-a90f-696694f03f1d",
+        "name": "Update an event in Google Calendar",
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "RKNDWKhI7S8vrj3R",
+            "name": "Google Calendar account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+        "typeVersion": 1,
+        "position": [
+          -352,
+          512
+        ],
+        "id": "46c686ef-af25-42fa-97ff-31cefc3a012a",
+        "name": "DeepSeek Chat Model",
+        "credentials": {
+          "deepSeekApi": {
+            "id": "XC1rpn87e0AY3JU9",
+            "name": "DeepSeek account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Insert row in Data tableUsa esta herramienta SOLO para guardar información personal, preferencias, datos de salud, o detalles del trabajo de Alejandro que sean relevantes para el futuro. NO guardes conversaciones triviales o saludos. Resume el dato en una frase clara y concisa (ej: 'A Alejandro le duele el isquio izquierdo' o 'Su equipo favorito es el Rayo').",
+          "dataTableId": {
+            "__rl": true,
+            "value": "GFcPFJiUtXAbX5pn",
+            "mode": "list",
+            "cachedResultName": "Memoria_Paco",
+            "cachedResultUrl": "/projects/8TlqgFtyNbA80VNg/datatables/GFcPFJiUtXAbX5pn"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Dato": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Dato', `Aqui apuntas los datos mas relevantes\n`, 'string') }}"
+            },
+            "matchingColumns": [
+              "Dato"
+            ],
+            "schema": [
+              {
+                "id": "Dato",
+                "displayName": "Dato",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTableTool",
+        "typeVersion": 1.1,
+        "position": [
+          752,
+          608
+        ],
+        "id": "807aed74-df61-4fa2-8df5-2e75c7c6f959",
+        "name": "Insert row in Data table"
+      },
+      {
+        "parameters": {
+          "event": "create",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.stravaTrigger",
+        "typeVersion": 1,
+        "position": [
+          -400,
+          -272
+        ],
+        "id": "45162388-ada0-4089-88e9-458f11d21883",
+        "name": "Strava Trigger",
+        "webhookId": "3555c9df-7b7f-4a6c-b5f5-4b78215ecc58",
+        "credentials": {
+          "stravaOAuth2Api": {
+            "id": "Sw6RPq7ODKIQzbBK",
+            "name": "Strava account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Puedes ver todos mis datos de strva",
+          "operation": "get",
+          "activityId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Activity_ID', `Aqui tienes que poner el id de la actividad`, 'string') }}"
+        },
+        "type": "n8n-nodes-base.stravaTool",
+        "typeVersion": 1.1,
+        "position": [
+          1104,
+          608
+        ],
+        "id": "e3b69a76-48c0-48ef-9acc-411ba499044b",
+        "name": "Get an activity in Strava",
+        "credentials": {
+          "stravaOAuth2Api": {
+            "id": "Sw6RPq7ODKIQzbBK",
+            "name": "Strava account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "limit": 5
+        },
+        "type": "n8n-nodes-base.stravaTool",
+        "typeVersion": 1.1,
+        "position": [
+          1296,
+          496
+        ],
+        "id": "521ce073-c965-42f8-914f-9818eaeda84e",
+        "name": "Get many activities in Strava",
+        "credentials": {
+          "stravaOAuth2Api": {
+            "id": "Sw6RPq7ODKIQzbBK",
+            "name": "Strava account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Crear una tarea o cosa que hacer en google tasks",
+          "task": "MDA0NDkwMDg3ODYzNjM3MzIzNzE6MDow",
+          "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Title', `Titulo de la tarea a crear`, 'string') }}",
+          "additionalFields": {
+            "completed": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Completion_Date', `'due': fecha de vencimiento OBLIGATORIAMENTE en formato RFC3339 (ej: 2026-02-17T20:00:00Z).\nIMPORTANTE: Si no sabes la hora, pon las 09:00:00Z.\"`, 'string') }}",
+            "dueDate": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Due_Date', `'due': fecha de vencimiento OBLIGATORIAMENTE en formato RFC3339 (ej: 2026-02-17T20:00:00Z).\nIMPORTANTE: Si no sabes la hora, pon las 09:00:00Z.\"`, 'string') }}",
+            "notes": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Notes', `descripcion de la tarea`, 'string') }}"
+          }
+        },
+        "type": "n8n-nodes-base.googleTasksTool",
+        "typeVersion": 1,
+        "position": [
+          496,
+          688
+        ],
+        "id": "507c2eed-efec-4686-b5f3-6693ba8ee61e",
+        "name": "Create a task in Google Tasks",
+        "credentials": {
+          "googleTasksOAuth2Api": {
+            "id": "qTdAG4ihSpivDH3g",
+            "name": "Google Tasks account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Revisar mis tareas en google taskjs",
+          "operation": "getAll",
+          "task": "MDA0NDkwMDg3ODYzNjM3MzIzNzE6MDow",
+          "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-base.googleTasksTool",
+        "typeVersion": 1,
+        "position": [
+          400,
+          688
+        ],
+        "id": "392fc083-57b7-4878-ab71-3bd3af6f2989",
+        "name": "Get many tasks in Google Tasks",
+        "credentials": {
+          "googleTasksOAuth2Api": {
+            "id": "qTdAG4ihSpivDH3g",
+            "name": "Google Tasks account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "se usa para marcar tareas de google tasks como completadas. Necesitas el id de la tarea, buscalo primero si no lo tienes",
+          "operation": "update",
+          "task": "MDA0NDkwMDg3ODYzNjM3MzIzNzE6MDow",
+          "taskId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Task_ID', `Id de la tasks a cambiar`, 'string') }}",
+          "updateFields": {
+            "status": "completed"
+          }
+        },
+        "type": "n8n-nodes-base.googleTasksTool",
+        "typeVersion": 1,
+        "position": [
+          672,
+          720
+        ],
+        "id": "1304a297-7899-440a-a0a7-4274170d2318",
+        "name": "Update a task in Google Tasks",
+        "credentials": {
+          "googleTasksOAuth2Api": {
+            "id": "qTdAG4ihSpivDH3g",
+            "name": "Google Tasks account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "9d4029b4-7fcf-490a-a04f-73c08b3809fe",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -848,
+          -64
+        ],
+        "id": "64afdb18-88c9-49ba-9fa5-3d37bc451450",
+        "name": "Webhook",
+        "webhookId": "9d4029b4-7fcf-490a-a04f-73c08b3809fe"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "69f75d81-9fca-408c-9024-8daa53e8cc60",
+                "leftValue": "={{ $if($('Webhook').isExecuted, \"siri\", \"telegram\") }}",
+                "rightValue": "siri",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          352,
+          -144
+        ],
+        "id": "a77b6e59-6d2d-4b46-b9c8-d57273b7810c",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={\n  \"output\": \"{{ $json.output }}\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          896,
+          -336
+        ],
+        "id": "fc3d124d-5843-4111-9ab9-212b5ec8ea38",
+        "name": "Respond to Webhook"
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Herramienta obligatoria para leer y guardar la memoria a largo plazo de Alejandro. \nLa base de datos es PostgreSQL. La tabla se llama \"memoria_paco\".\nEstructura de la tabla: id (SERIAL), dato (TEXT), categoria (TEXT).\n\nREGLAS DE USO:\n1. PARA LEER (Cuando Alejandro pregunte por algo de su pasado o sus gustos): \nEjecuta una consulta SQL como esta: SELECT dato FROM memoria_paco; \n(Puedes usar WHERE dato ILIKE '%palabra%' para buscar algo concreto).\n\nHerramienta para LEER la memoria de Alejandro. Úsala SIEMPRE que te pregunte sobre su pasado, sus gustos o sus datos (ej: \"¿Qué estudio?\", \"¿Cuál es mi equipo?\"). Busca palabras clave en la columna 'dato'.",
+          "operation": "select",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "memoria_paco",
+            "mode": "list",
+            "cachedResultName": "memoria_paco"
+          },
+          "returnAll": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgresTool",
+        "typeVersion": 2.6,
+        "position": [
+          -208,
+          704
+        ],
+        "id": "43788e2d-ebb3-4dda-8802-04c0a4a3f508",
+        "name": "Select rows from a table in Postgres",
+        "credentials": {
+          "postgres": {
+            "id": "qBUlViRVRXIdibki",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Herramienta para GUARDAR nuevos recuerdos de Alejandro. Úsala SOLO cuando él te cuente algo nuevo e importante sobre él. Optimiza los recursos y no guardes recuerdos repetidos o poco importantes, solo aquellos que vayan a hacer que mejores a largo plazo.\nHerramienta obligatoria para GUARDAR nuevos recuerdos de Alejandro. Úsala SOLO cuando él te pida explícitamente que recuerdes algo o te cuente un dato nuevo importante. \nDebes proporcionar los datos con estos nombres de columna exactos:\n- dato: (El recuerdo completo, ej: \"A Alejandro le gustan los macarrones\").\n- categoria: (Una sola palabra, ej: \"comida\", \"deporte\", \"personal\").",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "memoria_paco",
+            "mode": "list",
+            "cachedResultName": "memoria_paco"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "categoria": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('categoria', ``, 'string') }}",
+              "dato": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('dato', ``, 'string') }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "dato",
+                "displayName": "dato",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "categoria",
+                "displayName": "categoria",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgresTool",
+        "typeVersion": 2.6,
+        "position": [
+          -64,
+          704
+        ],
+        "id": "e1d095bf-d4d2-417b-9ede-1a6bf04680c1",
+        "name": "Insert rows in a table in Postgres",
+        "credentials": {
+          "postgres": {
+            "id": "qBUlViRVRXIdibki",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+        "typeVersion": 1,
+        "position": [
+          160,
+          608
+        ],
+        "id": "b3bf782f-b3d8-455b-8704-0aa8168bf715",
+        "name": "SerpAPI",
+        "credentials": {
+          "serpApi": {
+            "id": "70qYAfd21Nu8yTk1",
+            "name": "SerpAPI account"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+        "typeVersion": 1,
+        "position": [
+          416,
+          976
+        ],
+        "id": "36c45ae8-8a6a-4ebc-a4b4-267371a0e6cc",
+        "name": "Calculator"
+      },
+      {
+        "parameters": {
+          "toolDescription": "Usa esta herramienta con el método GET para extraer el texto completo de una URL que hayas encontrado previamente en SerpAPI",
+          "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', ``, 'string') }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequestTool",
+        "typeVersion": 4.4,
+        "position": [
+          528,
+          944
+        ],
+        "id": "3184e994-8edc-4069-8875-e2f16555209a",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "e8f420d2-903e-4926-87d3-1b1a2340a127",
+                "leftValue": "={{ $json.message.document.file_id }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -1008,
+          224
+        ],
+        "id": "818d1ad2-8914-4361-a24e-4efa2cb4c5de",
+        "name": "If1"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=Alejandro te ha enviado un archivo llamado: {{ $json.message.document.file_name }}\n\nTu trabajo es clasificarlo en la ruta correcta de su VPS.\nEstructura: /root/apuntes/Ingenieria_Software/Curso_[X]/Semestre_[Y]/[Asignatura]/[Tipo]/\n\nDevuelve ÚNICAMENTE la ruta final completa incluyendo el nombre del archivo. No añadas comillas, ni markdown, ni saludos. SOLO la ruta.\nEjemplo: /root/apuntes/Ingenieria_Software/Curso_3/Semestre_1/Bases_De_Datos/Practica/Examen_BD.pdf",
+          "batching": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.chainLlm",
+        "typeVersion": 1.9,
+        "position": [
+          -944,
+          544
+        ],
+        "id": "0b9a0993-307e-41e2-b088-dc1b5d1ab48a",
+        "name": "Basic LLM Chain"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+        "typeVersion": 1,
+        "position": [
+          -960,
+          800
+        ],
+        "id": "967d12f2-7a76-481d-aad0-6b021d74de41",
+        "name": "DeepSeek Chat Model1",
+        "credentials": {
+          "deepSeekApi": {
+            "id": "XC1rpn87e0AY3JU9",
+            "name": "DeepSeek account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "write",
+          "fileName": "={{ $json.text }}",
+          "options": {
+            "append": false
+          }
+        },
+        "type": "n8n-nodes-base.readWriteFile",
+        "typeVersion": 1.1,
+        "position": [
+          -560,
+          784
+        ],
+        "id": "bff17d7f-754a-432b-9483-39f3f01f8eab",
+        "name": "Read/Write Files from Disk"
+      },
+      {
+        "parameters": {
+          "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+          "text": "=¡Listo jefe! He guardado el apunte en tu Obsidian en la ruta: {{ $('Basic LLM Chain').item.json.text }}",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-base.telegram",
+        "typeVersion": 1.2,
+        "position": [
+          -240,
+          960
+        ],
+        "id": "0b92e698-948a-4d9b-b2e2-98423b67516f",
+        "name": "Send a text message2",
+        "webhookId": "e26bf7de-fc46-4f05-8c5e-ae2588a6813c",
+        "credentials": {
+          "telegramApi": {
+            "id": "Iw2ccnrLsZFZkMDZ",
+            "name": "Telegram account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Telegram Trigger": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Send a text message1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Simple Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many messages in Gmail": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create an event in Google Calendar": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenWeatherMap": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many events in Google Calendar": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update an event in Google Calendar": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DeepSeek Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert row in Data table": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Strava Trigger": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get an activity in Strava": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many activities in Strava": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create a task in Google Tasks": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many tasks in Google Tasks": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update a task in Google Tasks": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Send a text message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Select rows from a table in Postgres": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert rows in a table in Postgres": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SerpAPI": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Calculator": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "ai_tool": [
+          []
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "Basic LLM Chain",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          []
+        ]
+      },
+      "DeepSeek Chat Model1": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Basic LLM Chain",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Basic LLM Chain": {
+        "main": [
+          [
+            {
+              "node": "Read/Write Files from Disk",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Read/Write Files from Disk": {
+        "main": [
+          [
+            {
+              "node": "Send a text message2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Alejandro Rico Garcia",
+    "name": "Version fcbbc434",
+    "description": "",
+    "autosaved": true
+  },
+  "tags": [
+    {
+      "updatedAt": "2026-02-28T09:40:43.893Z",
+      "createdAt": "2026-02-28T09:40:43.893Z",
+      "id": "FU5wUx2Ol9QN5qlR",
+      "name": "PRODUCTION"
+    }
+  ]
+}
