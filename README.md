@@ -17,20 +17,18 @@ Paco es un asistente conversacional y ejecutivo construido sobre el motor de [n8
 - 📧 **Gmail:** Lectura, filtrado y búsqueda inteligente de correos electrónicos.
 - 💾 **Memoria a Largo Plazo (PostgreSQL):** Base de datos relacional (`memoria_paco`) donde el agente guarda y consulta proactivamente datos personales, gustos e información clave.
 - 🔍 **SerpAPI:** Acceso a internet en tiempo real para búsquedas de Google y scraping de URLs.
-- 📁 **Gestor Documental (Obsidian + Syncthing):** Sistema automatizado de clasificación y guardado de archivos (PDFs, documentos) directamente en una bóveda local sincronizada.
 
 ---
 
 ## 📂 Estructura del Repositorio
 
-Los archivos de este repositorio son exportaciones nativas de n8n en formato `.json`. Se suben aquí de forma totalmente automática mediante un **flujo de Auto-Backup** programado en el propio n8n.
+Los archivos de este repositorio son exportaciones nativas de n8n en formato `.json`. Se suben aquí de forma totalmente automática mediante un **flujo de Auto-Backup** programado en el propio n8n, llamado github.
 
-* `*-backup.json`: Copias de seguridad de los flujos principales (Agente, Clasificador de Archivos, etc.).
 * *El nombre de cada archivo se genera automáticamente limpiando el nombre original del workflow en n8n.*
 
 ---
 
-## 🔄 El Sistema de Backup Automático
+## 🔄 El Sistema de Backup Automático (github.json)
 La actualización de este repositorio no requiere intervención manual. Un flujo específico dentro de n8n se encarga de:
 1. Dispararse según un cronograma (`Schedule Trigger`).
 2. Consultar la API interna de n8n (`/api/v1/workflows`) para obtener la lista de todos los flujos activos.
