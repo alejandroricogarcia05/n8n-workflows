@@ -1,0 +1,90 @@
+{
+  "updatedAt": "2026-02-16T17:21:01.000Z",
+  "createdAt": "2026-02-16T17:15:21.913Z",
+  "id": "zOPfawKO9EzZ0gFZ",
+  "name": "memoria",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b1c89406-3367-47b8-965f-fbce52230c2c",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c6f2aa3c-759f-4841-9270-bf7487edfeb7",
+              "leftValue": "={{ $json.action }}",
+              "rightValue": "add",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "1e114893-52e2-442c-bde8-0f1ef4dde6a5",
+      "name": "If"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "6d91c2ab-091a-408e-b3c2-4cb46bb4a2f0",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-16T17:15:21.917Z",
+      "createdAt": "2026-02-16T17:15:21.917Z",
+      "role": "workflow:owner",
+      "workflowId": "zOPfawKO9EzZ0gFZ",
+      "projectId": "8TlqgFtyNbA80VNg"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
