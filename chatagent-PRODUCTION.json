@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-28T09:40:44.596Z",
+  "updatedAt": "2026-03-12T09:39:21.743Z",
   "createdAt": "2026-02-16T12:32:31.204Z",
   "id": "u12CayJegxExkV8I",
   "name": "ChatAgent",
@@ -19,8 +19,8 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.2,
       "position": [
-        -1280,
-        80
+        -1136,
+        512
       ],
       "id": "c27ff17f-7e61-4adb-b6a0-c2cfa2c3d7f0",
       "name": "Telegram Trigger",
@@ -35,9 +35,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "==[CONTEXTO DEL EVENTO]\nOrigen: {{ $('Telegram Trigger').isExecuted ? 'Telegram_Texto' : ($('Strava Trigger').isExecuted ? 'API_Strava' : 'Siri_Voz') }}\n\n[CONTENIDO]\n{{ $('Telegram Trigger').isExecuted ? $json.message.text : ($('Strava Trigger').isExecuted ? JSON.stringify($json) : JSON.stringify($json.body)) }}",
+        "text": "===[CONTEXTO DEL EVENTO]\nOrigen: {{ $('Telegram Trigger').isExecuted ? 'Telegram_Texto' : ($('Strava Trigger').isExecuted ? 'API_Strava' : ($('Schedule Trigger').isExecuted ? 'Trigger_2h' : 'Siri_Voz')) }}\n\n[CONTENIDO]\n{{ $('Telegram Trigger').isExecuted ? $json.message.text : ($('Strava Trigger').isExecuted ? JSON.stringify($json) : ($('Schedule Trigger').isExecuted ? 'Ejecuta revisión proactiva programada. Consulta memoria, clima y calendario. Si no hay nada relevante, no envíes nada.' : JSON.stringify($json.body))) }}",
         "options": {
-          "systemMessage": "=[IDENTITY & SOUL]\nEres Paco, el asistente personal de Inteligencia Artificial de Alejandro (ubicado en Alcobendas). Tu arquitectura está inspirada en OpenClaw. Tu objetivo principal es optimizar la vida de Alejandro, actuar como su segundo cerebro y gestionar su información con máxima eficiencia y precisión. \nTono: Eres directo, brillante, proactivo y mantienes una lealtad absoluta. Usas un tono natural y cercano de confianza, pero sin perder de vista que eres una herramienta de alto rendimiento.\n\n[RUNTIME & ENVIRONMENT]\n- Fecha y Hora Local: {{ $now.setZone('Europe/Madrid').toFormat('cccc, dd MMMM yyyy, HH:mm') }}\n- Zona Horaria: Europe/Madrid (CET).\n\n[TOOLING & MEMORY OPERATIONS]\nTienes acceso a herramientas de base de datos PostgreSQL (tabla: memoria_paco). La memoria NO se inyecta por defecto; debes recuperarla bajo demanda.\n- READ (Select): Si Alejandro pregunta por su contexto, gustos, historial o datos pasados, EJECUTA una consulta SQL para buscar la información antes de responder.\n- WRITE (Insert): Si el usuario te proporciona una información útil para el futuro (ideas, preferencias, hitos), EJECUTA una consulta para guardarla de forma proactiva. No pidas permiso, hazlo y confírmalo brevemente.\n3. WEB_SEARCH (Google/Serper): Úsala SIEMPRE que necesites información en tiempo real, noticias, el clima, o datos generales que no sepas y no estén en tu memoria. (Ej: \"¿Qué tiempo hace hoy en Madrid?\", \"¿Quién ganó el partido ayer?\").\n\n[SKILLS & ROUTING]\nDependiendo del campo \"Origen\" del input, debes activar un comportamiento específico:\n\n<skill name=\"Telegram_Texto\">\nComportamiento: Asistente conversacional y ejecutivo. Responde a sus dudas, organiza sus ideas o ejecuta las herramientas necesarias. Sé conciso, formatea las respuestas con Markdown (listas, negritas) para facilitar la lectura rápida.\n</skill>\n\n<skill name=\"Siri_Voz\">\nComportamiento: Asistencia en tiempo real. Genera respuestas EXTREMADAMENTE CORTAS (1-2 frases). PROHIBIDO usar Markdown, negritas, asteriscos o listas. Escribe solo texto plano para que el motor de texto a voz lo lea fluidamente.\n</skill>\n\n<skill name=\"API_Strava\">\nComportamiento: Analista de rendimiento. El input será un JSON crudo. \n1. Extrae silenciosamente: deporte (sport_type), distancia (conviértelo a km), tiempo (moving_time a minutos) y elevación.\n2. Guarda el hito en tu memoria (WRITE Tool) con la fecha de hoy.\n3. Genera un mensaje de reporte ejecutivo felicitándole por la métrica con un tono motivador de colega.\n</skill>\n<skill name=\"Telegram_Texto\">\nComportamiento: Asistente conversacional y ejecutivo. Responde a sus dudas y organiza sus ideas de forma impecable.\nREGLAS DE FORMATO OBLIGATORIAS PARA TELEGRAM:\n1. Usa <b>texto</b> para poner palabras en negrita. PROHIBIDO usar asteriscos (**).\n2. PROHIBIDO usar tablas de Markdown (con el símbolo | ). Telegram no las soporta.\n3. Si tienes que mostrar horarios o datos estructurados, usa listas simples con emojis de viñeta (ej: 📅 Lunes: 16:00 - Rodaje).\n4. Sé conciso y deja espacios en blanco (saltos de línea) entre los bloques de información para que sea fácil de leer en el móvil.\n</skill>\n[SAFETY & GUARDRAILS]\n- No alucines información personal. Si no lo sabes, usa tu herramienta READ. Si la herramienta no devuelve nada, admite que no lo tienes en tu base de datos.\n- Actúa siempre en el mejor interés de la productividad de Alejandro.\n\nREGLA CRÍTICA DE COMPORTAMIENTO:\nSi Alejandro te hace una pregunta de conocimiento general (como recomendaciones, charlas, recetas, etc.), NO INTENTES USAR NINGUNA HERRAMIENTA. \nResponde DIRECTAMENTE al usuario dando la respuesta final de forma inmediata.\nNo pienses en voz alta, simplemente da el \"Final Answer\".\nREGLA DE LONGITUD:\nTelegram tiene un límite de 4000 caracteres. Tus respuestas DEBEN ser directas, concisas y no superar NUNCA los 3000 caracteres. Resume la información y ve al grano.",
+          "systemMessage": "=[IDENTITY & SOUL]\nEres Paco, el asistente personal de IA de Alejandro (Alcobendas). Arquitectura inspirada en OpenClaw. Tu misión: optimizar su vida, actuar como su segundo cerebro y gestionar su información con máxima eficiencia.\nTono: Directo, brillante, proactivo. Cercano y de confianza, pero siempre de alto rendimiento.\n\n[RUNTIME & ENVIRONMENT]\n- Fecha y Hora Local: {{ $now.setZone('Europe/Madrid').toFormat('cccc, dd MMMM yyyy, HH:mm') }}\n- Zona Horaria: Europe/Madrid (CET)\n\n[TOOLING & MEMORY OPERATIONS]\nTienes acceso a PostgreSQL (tabla: memoria_paco). La memoria NO se inyecta por defecto.\n- READ: Si Alejandro pregunta por contexto, gustos, historial o datos pasados → ejecuta SQL antes de responder.\n- WRITE: Si el usuario da información útil para el futuro → guárdala proactivamente sin pedir permiso. Confírmalo brevemente.\n- WEB_SEARCH: Úsala SIEMPRE para información en tiempo real (clima, noticias, resultados).\n\n[SKILLS & ROUTING]\n\n<skill name=\"Telegram_Texto\">\nAsistente conversacional y ejecutivo. Responde dudas y organiza ideas.\nFORMATO OBLIGATORIO PARA TELEGRAM:\n1. Negrita: <b>texto</b>. PROHIBIDO asteriscos (**).\n2. PROHIBIDO tablas Markdown (símbolo |).\n3. Horarios o datos estructurados → listas con emojis (📅 Lunes: 16:00 - Rodaje).\n4. Conciso. Saltos de línea entre bloques para lectura móvil.\n</skill>\n\n<skill name=\"API_Strava\">\nAnalista de rendimiento. Input = JSON crudo.\n1. Extrae: deporte, distancia (km), tiempo (min), elevación.\n2. Guarda el hito en memoria (WRITE).\n3. Genera reporte ejecutivo motivador con las métricas.\n</skill>\n\n<skill name=\"Trigger_2h\">\nSe ejecuta automáticamente cada 2 horas en segundo plano.\nREGLA CRÍTICA — FILTRO DE RELEVANCIA:\nAntes de enviar cualquier mensaje, evalúa con criterio estricto si cumple AL MENOS UNO de estos criterios:\n  ✅ Alerta meteorológica relevante (lluvia intensa, calor extremo, nieve) que afecte sus planes.\n  ✅ Noticia de alto impacto en sus áreas de interés (tecnología, IA, negocios, deporte).\n  ✅ Recordatorio de un hito o tarea crítica próxima (en las siguientes 4h) detectada en memoria.\n  ✅ Insight accionable basado en sus datos pasados (ej: \"Llevas 5 días sin entrenar, ayer anotaste que querías mantener racha\").\n  ✅ No mandes mensajes en horario nocturno, de 21 a 9.\n  ✅ Oportunidad o información que genuinamente cambiaría algo en su día.\n\nSi NINGÚN criterio se cumple → NO envíes ningún mensaje. Silencio total.\nSi SÍ se cumple → Envía un mensaje ultraconciso (máx. 5 líneas), con emoji de contexto y acción sugerida si aplica.\nFormato del mensaje proactivo:\n  [emoji] <b>Título breve</b>\n  Cuerpo en 2-3 líneas máximo.\n  💡 Sugerencia accionable (opcional).\n</skill>\n\n[SAFETY & GUARDRAILS]\n- No alucines datos personales. Si no lo sabes, usa READ. Si no hay resultado, admítelo.\n- Actúa siempre en el mejor interés de la productividad de Alejandro.\n\n[REGLAS GLOBALES]\n- Preguntas de conocimiento general → responde DIRECTAMENTE, sin herramientas.\n- Límite de caracteres: NUNCA superes 3000 caracteres por mensaje.\n- No pienses en voz alta. Da la respuesta final de forma inmediata.",
           "maxIterations": 20
         }
       },
@@ -54,20 +54,6 @@
       "maxTries": 5,
       "executeOnce": false,
       "onError": "continueErrorOutput"
-    },
-    {
-      "parameters": {
-        "sessionIdType": "customKey",
-        "sessionKey": "1828879064"
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-      "typeVersion": 1.3,
-      "position": [
-        -208,
-        432
-      ],
-      "id": "77e0f574-af6d-4f16-9bf2-a656a5fd9dbb",
-      "name": "Simple Memory"
     },
     {
       "parameters": {
@@ -249,25 +235,6 @@
         "googleCalendarOAuth2Api": {
           "id": "RKNDWKhI7S8vrj3R",
           "name": "Google Calendar account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
-      "typeVersion": 1,
-      "position": [
-        -352,
-        512
-      ],
-      "id": "46c686ef-af25-42fa-97ff-31cefc3a012a",
-      "name": "DeepSeek Chat Model",
-      "credentials": {
-        "deepSeekApi": {
-          "id": "XC1rpn87e0AY3JU9",
-          "name": "DeepSeek account"
         }
       }
     },
@@ -524,40 +491,6 @@
     {
       "parameters": {
         "descriptionType": "manual",
-        "toolDescription": "Herramienta obligatoria para leer y guardar la memoria a largo plazo de Alejandro. \nLa base de datos es PostgreSQL. La tabla se llama \"memoria_paco\".\nEstructura de la tabla: id (SERIAL), dato (TEXT), categoria (TEXT).\n\nREGLAS DE USO:\n1. PARA LEER (Cuando Alejandro pregunte por algo de su pasado o sus gustos): \nEjecuta una consulta SQL como esta: SELECT dato FROM memoria_paco; \n(Puedes usar WHERE dato ILIKE '%palabra%' para buscar algo concreto).\n\nHerramienta para LEER la memoria de Alejandro. Úsala SIEMPRE que te pregunte sobre su pasado, sus gustos o sus datos (ej: \"¿Qué estudio?\", \"¿Cuál es mi equipo?\"). Busca palabras clave en la columna 'dato'.",
-        "operation": "select",
-        "schema": {
-          "__rl": true,
-          "mode": "list",
-          "value": "public"
-        },
-        "table": {
-          "__rl": true,
-          "value": "memoria_paco",
-          "mode": "list",
-          "cachedResultName": "memoria_paco"
-        },
-        "returnAll": true,
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgresTool",
-      "typeVersion": 2.6,
-      "position": [
-        -208,
-        704
-      ],
-      "id": "43788e2d-ebb3-4dda-8802-04c0a4a3f508",
-      "name": "Select rows from a table in Postgres",
-      "credentials": {
-        "postgres": {
-          "id": "qBUlViRVRXIdibki",
-          "name": "Postgres account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "descriptionType": "manual",
         "toolDescription": "Herramienta para GUARDAR nuevos recuerdos de Alejandro. Úsala SOLO cuando él te cuente algo nuevo e importante sobre él. Optimiza los recursos y no guardes recuerdos repetidos o poco importantes, solo aquellos que vayan a hacer que mejores a largo plazo.\nHerramienta obligatoria para GUARDAR nuevos recuerdos de Alejandro. Úsala SOLO cuando él te pida explícitamente que recuerdes algo o te cuente un dato nuevo importante. \nDebes proporcionar los datos con estos nombres de columna exactos:\n- dato: (El recuerdo completo, ej: \"A Alejandro le gustan los macarrones\").\n- categoria: (Una sola palabra, ej: \"comida\", \"deporte\", \"personal\").",
         "schema": {
           "__rl": true,
@@ -676,52 +609,37 @@
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "e8f420d2-903e-4926-87d3-1b1a2340a127",
-              "leftValue": "={{ $json.message.document.file_id }}",
-              "rightValue": "",
-              "operator": {
-                "type": "string",
-                "operation": "exists",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
+        "descriptionType": "manual",
+        "toolDescription": "Herramienta obligatoria para leer y guardar la memoria a largo plazo de Alejandro. \nLa base de datos es PostgreSQL. La tabla se llama \"memoria_paco\".\nEstructura de la tabla: id (SERIAL), dato (TEXT), categoria (TEXT).\n\nREGLAS DE USO:\n1. PARA LEER (Cuando Alejandro pregunte por algo de su pasado o sus gustos): \nEjecuta una consulta SQL como esta: SELECT dato FROM memoria_paco; \n(Puedes usar WHERE dato ILIKE '%palabra%' para buscar algo concreto).\n\nHerramienta para LEER la memoria de Alejandro. Úsala SIEMPRE que te pregunte sobre su pasado, sus gustos o sus datos (ej: \"¿Qué estudio?\", \"¿Cuál es mi equipo?\"). Busca palabras clave en la columna 'dato'.",
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
         },
+        "table": {
+          "__rl": true,
+          "value": "memoria_paco",
+          "mode": "list",
+          "cachedResultName": "memoria_paco"
+        },
+        "returnAll": true,
         "options": {}
       },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
       "position": [
-        -1008,
-        224
+        -208,
+        704
       ],
-      "id": "818d1ad2-8914-4361-a24e-4efa2cb4c5de",
-      "name": "If1"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=Alejandro te ha enviado un archivo llamado: {{ $json.message.document.file_name }}\n\nTu trabajo es clasificarlo en la ruta correcta de su VPS.\nEstructura: /root/apuntes/Ingenieria_Software/Curso_[X]/Semestre_[Y]/[Asignatura]/[Tipo]/\n\nDevuelve ÚNICAMENTE la ruta final completa incluyendo el nombre del archivo. No añadas comillas, ni markdown, ni saludos. SOLO la ruta.\nEjemplo: /root/apuntes/Ingenieria_Software/Curso_3/Semestre_1/Bases_De_Datos/Practica/Examen_BD.pdf",
-        "batching": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.chainLlm",
-      "typeVersion": 1.9,
-      "position": [
-        -944,
-        544
-      ],
-      "id": "0b9a0993-307e-41e2-b088-dc1b5d1ab48a",
-      "name": "Basic LLM Chain"
+      "id": "43788e2d-ebb3-4dda-8802-04c0a4a3f508",
+      "name": "Select rows from a table in Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "qBUlViRVRXIdibki",
+          "name": "Postgres account"
+        }
+      }
     },
     {
       "parameters": {
@@ -730,11 +648,11 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
       "typeVersion": 1,
       "position": [
-        -960,
-        800
+        -352,
+        512
       ],
-      "id": "967d12f2-7a76-481d-aad0-6b021d74de41",
-      "name": "DeepSeek Chat Model1",
+      "id": "46c686ef-af25-42fa-97ff-31cefc3a012a",
+      "name": "DeepSeek Chat Model",
       "credentials": {
         "deepSeekApi": {
           "id": "XC1rpn87e0AY3JU9",
@@ -744,42 +662,37 @@
     },
     {
       "parameters": {
-        "operation": "write",
-        "fileName": "={{ $json.text }}",
-        "options": {
-          "append": false
-        }
+        "sessionIdType": "customKey",
+        "sessionKey": "1828879064"
       },
-      "type": "n8n-nodes-base.readWriteFile",
-      "typeVersion": 1.1,
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
       "position": [
-        -560,
-        784
+        -208,
+        432
       ],
-      "id": "bff17d7f-754a-432b-9483-39f3f01f8eab",
-      "name": "Read/Write Files from Disk"
+      "id": "77e0f574-af6d-4f16-9bf2-a656a5fd9dbb",
+      "name": "Simple Memory"
     },
     {
       "parameters": {
-        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
-        "text": "=¡Listo jefe! He guardado el apunte en tu Obsidian en la ruta: {{ $('Basic LLM Chain').item.json.text }}",
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [
-        -240,
-        960
-      ],
-      "id": "0b92e698-948a-4d9b-b2e2-98423b67516f",
-      "name": "Send a text message2",
-      "webhookId": "e26bf7de-fc46-4f05-8c5e-ae2588a6813c",
-      "credentials": {
-        "telegramApi": {
-          "id": "Iw2ccnrLsZFZkMDZ",
-          "name": "Telegram account"
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 3
+            }
+          ]
         }
-      }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1120,
+        128
+      ],
+      "id": "de760b32-b8a6-4271-98d8-62a00b44be43",
+      "name": "Schedule Trigger"
     }
   ],
   "connections": {
@@ -807,17 +720,6 @@
           {
             "node": "Send a text message1",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Simple Memory": {
-      "ai_memory": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_memory",
             "index": 0
           }
         ]
@@ -873,17 +775,6 @@
           {
             "node": "AI Agent",
             "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "DeepSeek Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -995,17 +886,6 @@
         ]
       ]
     },
-    "Select rows from a table in Postgres": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Insert rows in a table in Postgres": {
       "ai_tool": [
         [
@@ -1044,45 +924,44 @@
         []
       ]
     },
-    "If1": {
-      "main": [
+    "Select rows from a table in Postgres": {
+      "ai_tool": [
         [
           {
-            "node": "Basic LLM Chain",
-            "type": "main",
+            "node": "AI Agent",
+            "type": "ai_tool",
             "index": 0
           }
-        ],
-        []
+        ]
       ]
     },
-    "DeepSeek Chat Model1": {
+    "DeepSeek Chat Model": {
       "ai_languageModel": [
         [
           {
-            "node": "Basic LLM Chain",
+            "node": "AI Agent",
             "type": "ai_languageModel",
             "index": 0
           }
         ]
       ]
     },
-    "Basic LLM Chain": {
-      "main": [
+    "Simple Memory": {
+      "ai_memory": [
         [
           {
-            "node": "Read/Write Files from Disk",
-            "type": "main",
+            "node": "AI Agent",
+            "type": "ai_memory",
             "index": 0
           }
         ]
       ]
     },
-    "Read/Write Files from Disk": {
+    "Schedule Trigger": {
       "main": [
         [
           {
-            "node": "Send a text message2",
+            "node": "AI Agent",
             "type": "main",
             "index": 0
           }
@@ -1097,7 +976,7 @@
   },
   "staticData": {
     "node:Strava Trigger": {
-      "webhookId": 332431
+      "webhookId": 334609
     },
     "node:Gmail Trigger": {
       "Gmail Trigger": {
@@ -1107,15 +986,20 @@
           "19c7175acd52a269"
         ]
       }
+    },
+    "node:Schedule Trigger": {
+      "recurrenceRules": [
+        0
+      ]
     }
   },
   "meta": {
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "fcbbc434-6af3-4266-b37d-e00a40098c4f",
-  "activeVersionId": "fcbbc434-6af3-4266-b37d-e00a40098c4f",
-  "triggerCount": 3,
+  "versionId": "231a828f-11c2-4089-a57f-7ca5285e9626",
+  "activeVersionId": "231a828f-11c2-4089-a57f-7ca5285e9626",
+  "triggerCount": 4,
   "shared": [
     {
       "updatedAt": "2026-02-16T12:32:31.210Z",
@@ -1126,9 +1010,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-02-26T20:07:11.000Z",
-    "createdAt": "2026-02-26T20:07:00.660Z",
-    "versionId": "fcbbc434-6af3-4266-b37d-e00a40098c4f",
+    "updatedAt": "2026-03-12T09:39:24.000Z",
+    "createdAt": "2026-03-12T09:39:21.747Z",
+    "versionId": "231a828f-11c2-4089-a57f-7ca5285e9626",
     "workflowId": "u12CayJegxExkV8I",
     "nodes": [
       {
@@ -1144,8 +1028,8 @@
         "type": "n8n-nodes-base.telegramTrigger",
         "typeVersion": 1.2,
         "position": [
-          -1280,
-          80
+          -1136,
+          512
         ],
         "id": "c27ff17f-7e61-4adb-b6a0-c2cfa2c3d7f0",
         "name": "Telegram Trigger",
@@ -1160,9 +1044,9 @@
       {
         "parameters": {
           "promptType": "define",
-          "text": "==[CONTEXTO DEL EVENTO]\nOrigen: {{ $('Telegram Trigger').isExecuted ? 'Telegram_Texto' : ($('Strava Trigger').isExecuted ? 'API_Strava' : 'Siri_Voz') }}\n\n[CONTENIDO]\n{{ $('Telegram Trigger').isExecuted ? $json.message.text : ($('Strava Trigger').isExecuted ? JSON.stringify($json) : JSON.stringify($json.body)) }}",
+          "text": "===[CONTEXTO DEL EVENTO]\nOrigen: {{ $('Telegram Trigger').isExecuted ? 'Telegram_Texto' : ($('Strava Trigger').isExecuted ? 'API_Strava' : ($('Schedule Trigger').isExecuted ? 'Trigger_2h' : 'Siri_Voz')) }}\n\n[CONTENIDO]\n{{ $('Telegram Trigger').isExecuted ? $json.message.text : ($('Strava Trigger').isExecuted ? JSON.stringify($json) : ($('Schedule Trigger').isExecuted ? 'Ejecuta revisión proactiva programada. Consulta memoria, clima y calendario. Si no hay nada relevante, no envíes nada.' : JSON.stringify($json.body))) }}",
           "options": {
-            "systemMessage": "=[IDENTITY & SOUL]\nEres Paco, el asistente personal de Inteligencia Artificial de Alejandro (ubicado en Alcobendas). Tu arquitectura está inspirada en OpenClaw. Tu objetivo principal es optimizar la vida de Alejandro, actuar como su segundo cerebro y gestionar su información con máxima eficiencia y precisión. \nTono: Eres directo, brillante, proactivo y mantienes una lealtad absoluta. Usas un tono natural y cercano de confianza, pero sin perder de vista que eres una herramienta de alto rendimiento.\n\n[RUNTIME & ENVIRONMENT]\n- Fecha y Hora Local: {{ $now.setZone('Europe/Madrid').toFormat('cccc, dd MMMM yyyy, HH:mm') }}\n- Zona Horaria: Europe/Madrid (CET).\n\n[TOOLING & MEMORY OPERATIONS]\nTienes acceso a herramientas de base de datos PostgreSQL (tabla: memoria_paco). La memoria NO se inyecta por defecto; debes recuperarla bajo demanda.\n- READ (Select): Si Alejandro pregunta por su contexto, gustos, historial o datos pasados, EJECUTA una consulta SQL para buscar la información antes de responder.\n- WRITE (Insert): Si el usuario te proporciona una información útil para el futuro (ideas, preferencias, hitos), EJECUTA una consulta para guardarla de forma proactiva. No pidas permiso, hazlo y confírmalo brevemente.\n3. WEB_SEARCH (Google/Serper): Úsala SIEMPRE que necesites información en tiempo real, noticias, el clima, o datos generales que no sepas y no estén en tu memoria. (Ej: \"¿Qué tiempo hace hoy en Madrid?\", \"¿Quién ganó el partido ayer?\").\n\n[SKILLS & ROUTING]\nDependiendo del campo \"Origen\" del input, debes activar un comportamiento específico:\n\n<skill name=\"Telegram_Texto\">\nComportamiento: Asistente conversacional y ejecutivo. Responde a sus dudas, organiza sus ideas o ejecuta las herramientas necesarias. Sé conciso, formatea las respuestas con Markdown (listas, negritas) para facilitar la lectura rápida.\n</skill>\n\n<skill name=\"Siri_Voz\">\nComportamiento: Asistencia en tiempo real. Genera respuestas EXTREMADAMENTE CORTAS (1-2 frases). PROHIBIDO usar Markdown, negritas, asteriscos o listas. Escribe solo texto plano para que el motor de texto a voz lo lea fluidamente.\n</skill>\n\n<skill name=\"API_Strava\">\nComportamiento: Analista de rendimiento. El input será un JSON crudo. \n1. Extrae silenciosamente: deporte (sport_type), distancia (conviértelo a km), tiempo (moving_time a minutos) y elevación.\n2. Guarda el hito en tu memoria (WRITE Tool) con la fecha de hoy.\n3. Genera un mensaje de reporte ejecutivo felicitándole por la métrica con un tono motivador de colega.\n</skill>\n<skill name=\"Telegram_Texto\">\nComportamiento: Asistente conversacional y ejecutivo. Responde a sus dudas y organiza sus ideas de forma impecable.\nREGLAS DE FORMATO OBLIGATORIAS PARA TELEGRAM:\n1. Usa <b>texto</b> para poner palabras en negrita. PROHIBIDO usar asteriscos (**).\n2. PROHIBIDO usar tablas de Markdown (con el símbolo | ). Telegram no las soporta.\n3. Si tienes que mostrar horarios o datos estructurados, usa listas simples con emojis de viñeta (ej: 📅 Lunes: 16:00 - Rodaje).\n4. Sé conciso y deja espacios en blanco (saltos de línea) entre los bloques de información para que sea fácil de leer en el móvil.\n</skill>\n[SAFETY & GUARDRAILS]\n- No alucines información personal. Si no lo sabes, usa tu herramienta READ. Si la herramienta no devuelve nada, admite que no lo tienes en tu base de datos.\n- Actúa siempre en el mejor interés de la productividad de Alejandro.\n\nREGLA CRÍTICA DE COMPORTAMIENTO:\nSi Alejandro te hace una pregunta de conocimiento general (como recomendaciones, charlas, recetas, etc.), NO INTENTES USAR NINGUNA HERRAMIENTA. \nResponde DIRECTAMENTE al usuario dando la respuesta final de forma inmediata.\nNo pienses en voz alta, simplemente da el \"Final Answer\".\nREGLA DE LONGITUD:\nTelegram tiene un límite de 4000 caracteres. Tus respuestas DEBEN ser directas, concisas y no superar NUNCA los 3000 caracteres. Resume la información y ve al grano.",
+            "systemMessage": "=[IDENTITY & SOUL]\nEres Paco, el asistente personal de IA de Alejandro (Alcobendas). Arquitectura inspirada en OpenClaw. Tu misión: optimizar su vida, actuar como su segundo cerebro y gestionar su información con máxima eficiencia.\nTono: Directo, brillante, proactivo. Cercano y de confianza, pero siempre de alto rendimiento.\n\n[RUNTIME & ENVIRONMENT]\n- Fecha y Hora Local: {{ $now.setZone('Europe/Madrid').toFormat('cccc, dd MMMM yyyy, HH:mm') }}\n- Zona Horaria: Europe/Madrid (CET)\n\n[TOOLING & MEMORY OPERATIONS]\nTienes acceso a PostgreSQL (tabla: memoria_paco). La memoria NO se inyecta por defecto.\n- READ: Si Alejandro pregunta por contexto, gustos, historial o datos pasados → ejecuta SQL antes de responder.\n- WRITE: Si el usuario da información útil para el futuro → guárdala proactivamente sin pedir permiso. Confírmalo brevemente.\n- WEB_SEARCH: Úsala SIEMPRE para información en tiempo real (clima, noticias, resultados).\n\n[SKILLS & ROUTING]\n\n<skill name=\"Telegram_Texto\">\nAsistente conversacional y ejecutivo. Responde dudas y organiza ideas.\nFORMATO OBLIGATORIO PARA TELEGRAM:\n1. Negrita: <b>texto</b>. PROHIBIDO asteriscos (**).\n2. PROHIBIDO tablas Markdown (símbolo |).\n3. Horarios o datos estructurados → listas con emojis (📅 Lunes: 16:00 - Rodaje).\n4. Conciso. Saltos de línea entre bloques para lectura móvil.\n</skill>\n\n<skill name=\"API_Strava\">\nAnalista de rendimiento. Input = JSON crudo.\n1. Extrae: deporte, distancia (km), tiempo (min), elevación.\n2. Guarda el hito en memoria (WRITE).\n3. Genera reporte ejecutivo motivador con las métricas.\n</skill>\n\n<skill name=\"Trigger_2h\">\nSe ejecuta automáticamente cada 2 horas en segundo plano.\nREGLA CRÍTICA — FILTRO DE RELEVANCIA:\nAntes de enviar cualquier mensaje, evalúa con criterio estricto si cumple AL MENOS UNO de estos criterios:\n  ✅ Alerta meteorológica relevante (lluvia intensa, calor extremo, nieve) que afecte sus planes.\n  ✅ Noticia de alto impacto en sus áreas de interés (tecnología, IA, negocios, deporte).\n  ✅ Recordatorio de un hito o tarea crítica próxima (en las siguientes 4h) detectada en memoria.\n  ✅ Insight accionable basado en sus datos pasados (ej: \"Llevas 5 días sin entrenar, ayer anotaste que querías mantener racha\").\n  ✅ No mandes mensajes en horario nocturno, de 21 a 9.\n  ✅ Oportunidad o información que genuinamente cambiaría algo en su día.\n\nSi NINGÚN criterio se cumple → NO envíes ningún mensaje. Silencio total.\nSi SÍ se cumple → Envía un mensaje ultraconciso (máx. 5 líneas), con emoji de contexto y acción sugerida si aplica.\nFormato del mensaje proactivo:\n  [emoji] <b>Título breve</b>\n  Cuerpo en 2-3 líneas máximo.\n  💡 Sugerencia accionable (opcional).\n</skill>\n\n[SAFETY & GUARDRAILS]\n- No alucines datos personales. Si no lo sabes, usa READ. Si no hay resultado, admítelo.\n- Actúa siempre en el mejor interés de la productividad de Alejandro.\n\n[REGLAS GLOBALES]\n- Preguntas de conocimiento general → responde DIRECTAMENTE, sin herramientas.\n- Límite de caracteres: NUNCA superes 3000 caracteres por mensaje.\n- No pienses en voz alta. Da la respuesta final de forma inmediata.",
             "maxIterations": 20
           }
         },
@@ -1179,20 +1063,6 @@
         "maxTries": 5,
         "executeOnce": false,
         "onError": "continueErrorOutput"
-      },
-      {
-        "parameters": {
-          "sessionIdType": "customKey",
-          "sessionKey": "1828879064"
-        },
-        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-        "typeVersion": 1.3,
-        "position": [
-          -208,
-          432
-        ],
-        "id": "77e0f574-af6d-4f16-9bf2-a656a5fd9dbb",
-        "name": "Simple Memory"
       },
       {
         "parameters": {
@@ -1374,25 +1244,6 @@
           "googleCalendarOAuth2Api": {
             "id": "RKNDWKhI7S8vrj3R",
             "name": "Google Calendar account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
-        "typeVersion": 1,
-        "position": [
-          -352,
-          512
-        ],
-        "id": "46c686ef-af25-42fa-97ff-31cefc3a012a",
-        "name": "DeepSeek Chat Model",
-        "credentials": {
-          "deepSeekApi": {
-            "id": "XC1rpn87e0AY3JU9",
-            "name": "DeepSeek account"
           }
         }
       },
@@ -1649,40 +1500,6 @@
       {
         "parameters": {
           "descriptionType": "manual",
-          "toolDescription": "Herramienta obligatoria para leer y guardar la memoria a largo plazo de Alejandro. \nLa base de datos es PostgreSQL. La tabla se llama \"memoria_paco\".\nEstructura de la tabla: id (SERIAL), dato (TEXT), categoria (TEXT).\n\nREGLAS DE USO:\n1. PARA LEER (Cuando Alejandro pregunte por algo de su pasado o sus gustos): \nEjecuta una consulta SQL como esta: SELECT dato FROM memoria_paco; \n(Puedes usar WHERE dato ILIKE '%palabra%' para buscar algo concreto).\n\nHerramienta para LEER la memoria de Alejandro. Úsala SIEMPRE que te pregunte sobre su pasado, sus gustos o sus datos (ej: \"¿Qué estudio?\", \"¿Cuál es mi equipo?\"). Busca palabras clave en la columna 'dato'.",
-          "operation": "select",
-          "schema": {
-            "__rl": true,
-            "mode": "list",
-            "value": "public"
-          },
-          "table": {
-            "__rl": true,
-            "value": "memoria_paco",
-            "mode": "list",
-            "cachedResultName": "memoria_paco"
-          },
-          "returnAll": true,
-          "options": {}
-        },
-        "type": "n8n-nodes-base.postgresTool",
-        "typeVersion": 2.6,
-        "position": [
-          -208,
-          704
-        ],
-        "id": "43788e2d-ebb3-4dda-8802-04c0a4a3f508",
-        "name": "Select rows from a table in Postgres",
-        "credentials": {
-          "postgres": {
-            "id": "qBUlViRVRXIdibki",
-            "name": "Postgres account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "descriptionType": "manual",
           "toolDescription": "Herramienta para GUARDAR nuevos recuerdos de Alejandro. Úsala SOLO cuando él te cuente algo nuevo e importante sobre él. Optimiza los recursos y no guardes recuerdos repetidos o poco importantes, solo aquellos que vayan a hacer que mejores a largo plazo.\nHerramienta obligatoria para GUARDAR nuevos recuerdos de Alejandro. Úsala SOLO cuando él te pida explícitamente que recuerdes algo o te cuente un dato nuevo importante. \nDebes proporcionar los datos con estos nombres de columna exactos:\n- dato: (El recuerdo completo, ej: \"A Alejandro le gustan los macarrones\").\n- categoria: (Una sola palabra, ej: \"comida\", \"deporte\", \"personal\").",
           "schema": {
             "__rl": true,
@@ -1801,52 +1618,37 @@
       },
       {
         "parameters": {
-          "conditions": {
-            "options": {
-              "caseSensitive": true,
-              "leftValue": "",
-              "typeValidation": "strict",
-              "version": 3
-            },
-            "conditions": [
-              {
-                "id": "e8f420d2-903e-4926-87d3-1b1a2340a127",
-                "leftValue": "={{ $json.message.document.file_id }}",
-                "rightValue": "",
-                "operator": {
-                  "type": "string",
-                  "operation": "exists",
-                  "singleValue": true
-                }
-              }
-            ],
-            "combinator": "and"
+          "descriptionType": "manual",
+          "toolDescription": "Herramienta obligatoria para leer y guardar la memoria a largo plazo de Alejandro. \nLa base de datos es PostgreSQL. La tabla se llama \"memoria_paco\".\nEstructura de la tabla: id (SERIAL), dato (TEXT), categoria (TEXT).\n\nREGLAS DE USO:\n1. PARA LEER (Cuando Alejandro pregunte por algo de su pasado o sus gustos): \nEjecuta una consulta SQL como esta: SELECT dato FROM memoria_paco; \n(Puedes usar WHERE dato ILIKE '%palabra%' para buscar algo concreto).\n\nHerramienta para LEER la memoria de Alejandro. Úsala SIEMPRE que te pregunte sobre su pasado, sus gustos o sus datos (ej: \"¿Qué estudio?\", \"¿Cuál es mi equipo?\"). Busca palabras clave en la columna 'dato'.",
+          "operation": "select",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
           },
+          "table": {
+            "__rl": true,
+            "value": "memoria_paco",
+            "mode": "list",
+            "cachedResultName": "memoria_paco"
+          },
+          "returnAll": true,
           "options": {}
         },
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 2.3,
+        "type": "n8n-nodes-base.postgresTool",
+        "typeVersion": 2.6,
         "position": [
-          -1008,
-          224
+          -208,
+          704
         ],
-        "id": "818d1ad2-8914-4361-a24e-4efa2cb4c5de",
-        "name": "If1"
-      },
-      {
-        "parameters": {
-          "promptType": "define",
-          "text": "=Alejandro te ha enviado un archivo llamado: {{ $json.message.document.file_name }}\n\nTu trabajo es clasificarlo en la ruta correcta de su VPS.\nEstructura: /root/apuntes/Ingenieria_Software/Curso_[X]/Semestre_[Y]/[Asignatura]/[Tipo]/\n\nDevuelve ÚNICAMENTE la ruta final completa incluyendo el nombre del archivo. No añadas comillas, ni markdown, ni saludos. SOLO la ruta.\nEjemplo: /root/apuntes/Ingenieria_Software/Curso_3/Semestre_1/Bases_De_Datos/Practica/Examen_BD.pdf",
-          "batching": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.chainLlm",
-        "typeVersion": 1.9,
-        "position": [
-          -944,
-          544
-        ],
-        "id": "0b9a0993-307e-41e2-b088-dc1b5d1ab48a",
-        "name": "Basic LLM Chain"
+        "id": "43788e2d-ebb3-4dda-8802-04c0a4a3f508",
+        "name": "Select rows from a table in Postgres",
+        "credentials": {
+          "postgres": {
+            "id": "qBUlViRVRXIdibki",
+            "name": "Postgres account"
+          }
+        }
       },
       {
         "parameters": {
@@ -1855,11 +1657,11 @@
         "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
         "typeVersion": 1,
         "position": [
-          -960,
-          800
+          -352,
+          512
         ],
-        "id": "967d12f2-7a76-481d-aad0-6b021d74de41",
-        "name": "DeepSeek Chat Model1",
+        "id": "46c686ef-af25-42fa-97ff-31cefc3a012a",
+        "name": "DeepSeek Chat Model",
         "credentials": {
           "deepSeekApi": {
             "id": "XC1rpn87e0AY3JU9",
@@ -1869,42 +1671,37 @@
       },
       {
         "parameters": {
-          "operation": "write",
-          "fileName": "={{ $json.text }}",
-          "options": {
-            "append": false
-          }
+          "sessionIdType": "customKey",
+          "sessionKey": "1828879064"
         },
-        "type": "n8n-nodes-base.readWriteFile",
-        "typeVersion": 1.1,
+        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+        "typeVersion": 1.3,
         "position": [
-          -560,
-          784
+          -208,
+          432
         ],
-        "id": "bff17d7f-754a-432b-9483-39f3f01f8eab",
-        "name": "Read/Write Files from Disk"
+        "id": "77e0f574-af6d-4f16-9bf2-a656a5fd9dbb",
+        "name": "Simple Memory"
       },
       {
         "parameters": {
-          "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
-          "text": "=¡Listo jefe! He guardado el apunte en tu Obsidian en la ruta: {{ $('Basic LLM Chain').item.json.text }}",
-          "additionalFields": {}
-        },
-        "type": "n8n-nodes-base.telegram",
-        "typeVersion": 1.2,
-        "position": [
-          -240,
-          960
-        ],
-        "id": "0b92e698-948a-4d9b-b2e2-98423b67516f",
-        "name": "Send a text message2",
-        "webhookId": "e26bf7de-fc46-4f05-8c5e-ae2588a6813c",
-        "credentials": {
-          "telegramApi": {
-            "id": "Iw2ccnrLsZFZkMDZ",
-            "name": "Telegram account"
+          "rule": {
+            "interval": [
+              {
+                "field": "hours",
+                "hoursInterval": 3
+              }
+            ]
           }
-        }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          -1120,
+          128
+        ],
+        "id": "de760b32-b8a6-4271-98d8-62a00b44be43",
+        "name": "Schedule Trigger"
       }
     ],
     "connections": {
@@ -1932,17 +1729,6 @@
             {
               "node": "Send a text message1",
               "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Simple Memory": {
-        "ai_memory": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_memory",
               "index": 0
             }
           ]
@@ -1998,17 +1784,6 @@
             {
               "node": "AI Agent",
               "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "DeepSeek Chat Model": {
-        "ai_languageModel": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_languageModel",
               "index": 0
             }
           ]
@@ -2120,17 +1895,6 @@
           ]
         ]
       },
-      "Select rows from a table in Postgres": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Insert rows in a table in Postgres": {
         "ai_tool": [
           [
@@ -2169,45 +1933,44 @@
           []
         ]
       },
-      "If1": {
-        "main": [
+      "Select rows from a table in Postgres": {
+        "ai_tool": [
           [
             {
-              "node": "Basic LLM Chain",
-              "type": "main",
+              "node": "AI Agent",
+              "type": "ai_tool",
               "index": 0
             }
-          ],
-          []
+          ]
         ]
       },
-      "DeepSeek Chat Model1": {
+      "DeepSeek Chat Model": {
         "ai_languageModel": [
           [
             {
-              "node": "Basic LLM Chain",
+              "node": "AI Agent",
               "type": "ai_languageModel",
               "index": 0
             }
           ]
         ]
       },
-      "Basic LLM Chain": {
-        "main": [
+      "Simple Memory": {
+        "ai_memory": [
           [
             {
-              "node": "Read/Write Files from Disk",
-              "type": "main",
+              "node": "AI Agent",
+              "type": "ai_memory",
               "index": 0
             }
           ]
         ]
       },
-      "Read/Write Files from Disk": {
+      "Schedule Trigger": {
         "main": [
           [
             {
-              "node": "Send a text message2",
+              "node": "AI Agent",
               "type": "main",
               "index": 0
             }
@@ -2216,9 +1979,9 @@
       }
     },
     "authors": "Alejandro Rico Garcia",
-    "name": "Version fcbbc434",
+    "name": "Version 231a828f",
     "description": "",
-    "autosaved": true
+    "autosaved": false
   },
   "tags": [
     {
