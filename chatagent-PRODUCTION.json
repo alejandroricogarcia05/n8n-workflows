@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-12T09:39:21.743Z",
+  "updatedAt": "2026-03-26T10:02:03.717Z",
   "createdAt": "2026-02-16T12:32:31.204Z",
   "id": "u12CayJegxExkV8I",
   "name": "ChatAgent",
@@ -673,26 +673,6 @@
       ],
       "id": "77e0f574-af6d-4f16-9bf2-a656a5fd9dbb",
       "name": "Simple Memory"
-    },
-    {
-      "parameters": {
-        "rule": {
-          "interval": [
-            {
-              "field": "hours",
-              "hoursInterval": 3
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.scheduleTrigger",
-      "typeVersion": 1.3,
-      "position": [
-        -1120,
-        128
-      ],
-      "id": "de760b32-b8a6-4271-98d8-62a00b44be43",
-      "name": "Schedule Trigger"
     }
   ],
   "connections": {
@@ -956,17 +936,6 @@
           }
         ]
       ]
-    },
-    "Schedule Trigger": {
-      "main": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
   "settings": {
@@ -976,7 +945,7 @@
   },
   "staticData": {
     "node:Strava Trigger": {
-      "webhookId": 334609
+      "webhookId": 337131
     },
     "node:Gmail Trigger": {
       "Gmail Trigger": {
@@ -989,7 +958,7 @@
     },
     "node:Schedule Trigger": {
       "recurrenceRules": [
-        0
+        9
       ]
     }
   },
@@ -997,9 +966,9 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "231a828f-11c2-4089-a57f-7ca5285e9626",
-  "activeVersionId": "231a828f-11c2-4089-a57f-7ca5285e9626",
-  "triggerCount": 4,
+  "versionId": "2bb5c5f3-7960-4bdf-afb7-9bf2fa3d6631",
+  "activeVersionId": "2bb5c5f3-7960-4bdf-afb7-9bf2fa3d6631",
+  "triggerCount": 3,
   "shared": [
     {
       "updatedAt": "2026-02-16T12:32:31.210Z",
@@ -1010,9 +979,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-03-12T09:39:24.000Z",
-    "createdAt": "2026-03-12T09:39:21.747Z",
-    "versionId": "231a828f-11c2-4089-a57f-7ca5285e9626",
+    "updatedAt": "2026-03-26T10:02:06.000Z",
+    "createdAt": "2026-03-26T10:02:03.720Z",
+    "versionId": "2bb5c5f3-7960-4bdf-afb7-9bf2fa3d6631",
     "workflowId": "u12CayJegxExkV8I",
     "nodes": [
       {
@@ -1682,26 +1651,6 @@
         ],
         "id": "77e0f574-af6d-4f16-9bf2-a656a5fd9dbb",
         "name": "Simple Memory"
-      },
-      {
-        "parameters": {
-          "rule": {
-            "interval": [
-              {
-                "field": "hours",
-                "hoursInterval": 3
-              }
-            ]
-          }
-        },
-        "type": "n8n-nodes-base.scheduleTrigger",
-        "typeVersion": 1.3,
-        "position": [
-          -1120,
-          128
-        ],
-        "id": "de760b32-b8a6-4271-98d8-62a00b44be43",
-        "name": "Schedule Trigger"
       }
     ],
     "connections": {
@@ -1965,23 +1914,12 @@
             }
           ]
         ]
-      },
-      "Schedule Trigger": {
-        "main": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
       }
     },
     "authors": "Alejandro Rico Garcia",
-    "name": "Version 231a828f",
+    "name": "Version 2bb5c5f3",
     "description": "",
-    "autosaved": false
+    "autosaved": true
   },
   "tags": [
     {
