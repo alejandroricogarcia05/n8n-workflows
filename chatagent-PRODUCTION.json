@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-26T10:02:03.717Z",
+  "updatedAt": "2026-04-05T16:27:04.252Z",
   "createdAt": "2026-02-16T12:32:31.204Z",
   "id": "u12CayJegxExkV8I",
   "name": "ChatAgent",
@@ -35,7 +35,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "===[CONTEXTO DEL EVENTO]\nOrigen: {{ $('Telegram Trigger').isExecuted ? 'Telegram_Texto' : ($('Strava Trigger').isExecuted ? 'API_Strava' : ($('Schedule Trigger').isExecuted ? 'Trigger_2h' : 'Siri_Voz')) }}\n\n[CONTENIDO]\n{{ $('Telegram Trigger').isExecuted ? $json.message.text : ($('Strava Trigger').isExecuted ? JSON.stringify($json) : ($('Schedule Trigger').isExecuted ? 'Ejecuta revisión proactiva programada. Consulta memoria, clima y calendario. Si no hay nada relevante, no envíes nada.' : JSON.stringify($json.body))) }}",
+        "text": "====[CONTEXTO DEL EVENTO]\nOrigen: {{ $prevNode.name === 'Telegram Trigger' ? 'Telegram_Texto' : ($prevNode.name === 'Strava Trigger' ? 'API_Strava' : ($prevNode.name === 'Schedule Trigger' ? 'Trigger_2h' : 'Siri_Voz')) }}\n\n[CONTENIDO]\n{{ $prevNode.name === 'Telegram Trigger' ? $json.message.text : ($prevNode.name === 'Strava Trigger' ? JSON.stringify($json) : ($prevNode.name === 'Schedule Trigger' ? 'Ejecuta revisión proactiva programada. Consulta memoria, clima y calendario. Si no hay nada relevante, no envíes nada.' : JSON.stringify($json.body))) }}",
         "options": {
           "systemMessage": "=[IDENTITY & SOUL]\nEres Paco, el asistente personal de IA de Alejandro (Alcobendas). Arquitectura inspirada en OpenClaw. Tu misión: optimizar su vida, actuar como su segundo cerebro y gestionar su información con máxima eficiencia.\nTono: Directo, brillante, proactivo. Cercano y de confianza, pero siempre de alto rendimiento.\n\n[RUNTIME & ENVIRONMENT]\n- Fecha y Hora Local: {{ $now.setZone('Europe/Madrid').toFormat('cccc, dd MMMM yyyy, HH:mm') }}\n- Zona Horaria: Europe/Madrid (CET)\n\n[TOOLING & MEMORY OPERATIONS]\nTienes acceso a PostgreSQL (tabla: memoria_paco). La memoria NO se inyecta por defecto.\n- READ: Si Alejandro pregunta por contexto, gustos, historial o datos pasados → ejecuta SQL antes de responder.\n- WRITE: Si el usuario da información útil para el futuro → guárdala proactivamente sin pedir permiso. Confírmalo brevemente.\n- WEB_SEARCH: Úsala SIEMPRE para información en tiempo real (clima, noticias, resultados).\n\n[SKILLS & ROUTING]\n\n<skill name=\"Telegram_Texto\">\nAsistente conversacional y ejecutivo. Responde dudas y organiza ideas.\nFORMATO OBLIGATORIO PARA TELEGRAM:\n1. Negrita: <b>texto</b>. PROHIBIDO asteriscos (**).\n2. PROHIBIDO tablas Markdown (símbolo |).\n3. Horarios o datos estructurados → listas con emojis (📅 Lunes: 16:00 - Rodaje).\n4. Conciso. Saltos de línea entre bloques para lectura móvil.\n</skill>\n\n<skill name=\"API_Strava\">\nAnalista de rendimiento. Input = JSON crudo.\n1. Extrae: deporte, distancia (km), tiempo (min), elevación.\n2. Guarda el hito en memoria (WRITE).\n3. Genera reporte ejecutivo motivador con las métricas.\n</skill>\n\n<skill name=\"Trigger_2h\">\nSe ejecuta automáticamente cada 2 horas en segundo plano.\nREGLA CRÍTICA — FILTRO DE RELEVANCIA:\nAntes de enviar cualquier mensaje, evalúa con criterio estricto si cumple AL MENOS UNO de estos criterios:\n  ✅ Alerta meteorológica relevante (lluvia intensa, calor extremo, nieve) que afecte sus planes.\n  ✅ Noticia de alto impacto en sus áreas de interés (tecnología, IA, negocios, deporte).\n  ✅ Recordatorio de un hito o tarea crítica próxima (en las siguientes 4h) detectada en memoria.\n  ✅ Insight accionable basado en sus datos pasados (ej: \"Llevas 5 días sin entrenar, ayer anotaste que querías mantener racha\").\n  ✅ No mandes mensajes en horario nocturno, de 21 a 9.\n  ✅ Oportunidad o información que genuinamente cambiaría algo en su día.\n\nSi NINGÚN criterio se cumple → NO envíes ningún mensaje. Silencio total.\nSi SÍ se cumple → Envía un mensaje ultraconciso (máx. 5 líneas), con emoji de contexto y acción sugerida si aplica.\nFormato del mensaje proactivo:\n  [emoji] <b>Título breve</b>\n  Cuerpo en 2-3 líneas máximo.\n  💡 Sugerencia accionable (opcional).\n</skill>\n\n[SAFETY & GUARDRAILS]\n- No alucines datos personales. Si no lo sabes, usa READ. Si no hay resultado, admítelo.\n- Actúa siempre en el mejor interés de la productividad de Alejandro.\n\n[REGLAS GLOBALES]\n- Preguntas de conocimiento general → responde DIRECTAMENTE, sin herramientas.\n- Límite de caracteres: NUNCA superes 3000 caracteres por mensaje.\n- No pienses en voz alta. Da la respuesta final de forma inmediata.",
           "maxIterations": 20
@@ -427,7 +427,6 @@
       "parameters": {
         "httpMethod": "POST",
         "path": "9d4029b4-7fcf-490a-a04f-73c08b3809fe",
-        "responseMode": "responseNode",
         "options": {}
       },
       "type": "n8n-nodes-base.webhook",
@@ -439,54 +438,6 @@
       "id": "64afdb18-88c9-49ba-9fa5-3d37bc451450",
       "name": "Webhook",
       "webhookId": "9d4029b4-7fcf-490a-a04f-73c08b3809fe"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "69f75d81-9fca-408c-9024-8daa53e8cc60",
-              "leftValue": "={{ $if($('Webhook').isExecuted, \"siri\", \"telegram\") }}",
-              "rightValue": "siri",
-              "operator": {
-                "type": "string",
-                "operation": "equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
-      "position": [
-        352,
-        -144
-      ],
-      "id": "a77b6e59-6d2d-4b46-b9c8-d57273b7810c",
-      "name": "If"
-    },
-    {
-      "parameters": {
-        "respondWith": "json",
-        "responseBody": "={\n  \"output\": \"{{ $json.output }}\"\n}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.5,
-      "position": [
-        896,
-        -336
-      ],
-      "id": "fc3d124d-5843-4111-9ab9-212b5ec8ea38",
-      "name": "Respond to Webhook"
     },
     {
       "parameters": {
@@ -691,7 +642,7 @@
       "main": [
         [
           {
-            "node": "If",
+            "node": "Send a text message",
             "type": "main",
             "index": 0
           }
@@ -848,24 +799,6 @@
         ]
       ]
     },
-    "If": {
-      "main": [
-        [
-          {
-            "node": "Respond to Webhook",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Send a text message",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Insert rows in a table in Postgres": {
       "ai_tool": [
         [
@@ -945,7 +878,7 @@
   },
   "staticData": {
     "node:Strava Trigger": {
-      "webhookId": 337131
+      "webhookId": 339094
     },
     "node:Gmail Trigger": {
       "Gmail Trigger": {
@@ -966,8 +899,8 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "2bb5c5f3-7960-4bdf-afb7-9bf2fa3d6631",
-  "activeVersionId": "2bb5c5f3-7960-4bdf-afb7-9bf2fa3d6631",
+  "versionId": "28933ddf-56c9-4b5e-a5ed-4edcc4ab6e5a",
+  "activeVersionId": "28933ddf-56c9-4b5e-a5ed-4edcc4ab6e5a",
   "triggerCount": 3,
   "shared": [
     {
@@ -979,9 +912,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-03-26T10:02:06.000Z",
-    "createdAt": "2026-03-26T10:02:03.720Z",
-    "versionId": "2bb5c5f3-7960-4bdf-afb7-9bf2fa3d6631",
+    "updatedAt": "2026-04-05T16:27:31.000Z",
+    "createdAt": "2026-04-05T16:27:04.254Z",
+    "versionId": "28933ddf-56c9-4b5e-a5ed-4edcc4ab6e5a",
     "workflowId": "u12CayJegxExkV8I",
     "nodes": [
       {
@@ -1013,7 +946,7 @@
       {
         "parameters": {
           "promptType": "define",
-          "text": "===[CONTEXTO DEL EVENTO]\nOrigen: {{ $('Telegram Trigger').isExecuted ? 'Telegram_Texto' : ($('Strava Trigger').isExecuted ? 'API_Strava' : ($('Schedule Trigger').isExecuted ? 'Trigger_2h' : 'Siri_Voz')) }}\n\n[CONTENIDO]\n{{ $('Telegram Trigger').isExecuted ? $json.message.text : ($('Strava Trigger').isExecuted ? JSON.stringify($json) : ($('Schedule Trigger').isExecuted ? 'Ejecuta revisión proactiva programada. Consulta memoria, clima y calendario. Si no hay nada relevante, no envíes nada.' : JSON.stringify($json.body))) }}",
+          "text": "====[CONTEXTO DEL EVENTO]\nOrigen: {{ $prevNode.name === 'Telegram Trigger' ? 'Telegram_Texto' : ($prevNode.name === 'Strava Trigger' ? 'API_Strava' : ($prevNode.name === 'Schedule Trigger' ? 'Trigger_2h' : 'Siri_Voz')) }}\n\n[CONTENIDO]\n{{ $prevNode.name === 'Telegram Trigger' ? $json.message.text : ($prevNode.name === 'Strava Trigger' ? JSON.stringify($json) : ($prevNode.name === 'Schedule Trigger' ? 'Ejecuta revisión proactiva programada. Consulta memoria, clima y calendario. Si no hay nada relevante, no envíes nada.' : JSON.stringify($json.body))) }}",
           "options": {
             "systemMessage": "=[IDENTITY & SOUL]\nEres Paco, el asistente personal de IA de Alejandro (Alcobendas). Arquitectura inspirada en OpenClaw. Tu misión: optimizar su vida, actuar como su segundo cerebro y gestionar su información con máxima eficiencia.\nTono: Directo, brillante, proactivo. Cercano y de confianza, pero siempre de alto rendimiento.\n\n[RUNTIME & ENVIRONMENT]\n- Fecha y Hora Local: {{ $now.setZone('Europe/Madrid').toFormat('cccc, dd MMMM yyyy, HH:mm') }}\n- Zona Horaria: Europe/Madrid (CET)\n\n[TOOLING & MEMORY OPERATIONS]\nTienes acceso a PostgreSQL (tabla: memoria_paco). La memoria NO se inyecta por defecto.\n- READ: Si Alejandro pregunta por contexto, gustos, historial o datos pasados → ejecuta SQL antes de responder.\n- WRITE: Si el usuario da información útil para el futuro → guárdala proactivamente sin pedir permiso. Confírmalo brevemente.\n- WEB_SEARCH: Úsala SIEMPRE para información en tiempo real (clima, noticias, resultados).\n\n[SKILLS & ROUTING]\n\n<skill name=\"Telegram_Texto\">\nAsistente conversacional y ejecutivo. Responde dudas y organiza ideas.\nFORMATO OBLIGATORIO PARA TELEGRAM:\n1. Negrita: <b>texto</b>. PROHIBIDO asteriscos (**).\n2. PROHIBIDO tablas Markdown (símbolo |).\n3. Horarios o datos estructurados → listas con emojis (📅 Lunes: 16:00 - Rodaje).\n4. Conciso. Saltos de línea entre bloques para lectura móvil.\n</skill>\n\n<skill name=\"API_Strava\">\nAnalista de rendimiento. Input = JSON crudo.\n1. Extrae: deporte, distancia (km), tiempo (min), elevación.\n2. Guarda el hito en memoria (WRITE).\n3. Genera reporte ejecutivo motivador con las métricas.\n</skill>\n\n<skill name=\"Trigger_2h\">\nSe ejecuta automáticamente cada 2 horas en segundo plano.\nREGLA CRÍTICA — FILTRO DE RELEVANCIA:\nAntes de enviar cualquier mensaje, evalúa con criterio estricto si cumple AL MENOS UNO de estos criterios:\n  ✅ Alerta meteorológica relevante (lluvia intensa, calor extremo, nieve) que afecte sus planes.\n  ✅ Noticia de alto impacto en sus áreas de interés (tecnología, IA, negocios, deporte).\n  ✅ Recordatorio de un hito o tarea crítica próxima (en las siguientes 4h) detectada en memoria.\n  ✅ Insight accionable basado en sus datos pasados (ej: \"Llevas 5 días sin entrenar, ayer anotaste que querías mantener racha\").\n  ✅ No mandes mensajes en horario nocturno, de 21 a 9.\n  ✅ Oportunidad o información que genuinamente cambiaría algo en su día.\n\nSi NINGÚN criterio se cumple → NO envíes ningún mensaje. Silencio total.\nSi SÍ se cumple → Envía un mensaje ultraconciso (máx. 5 líneas), con emoji de contexto y acción sugerida si aplica.\nFormato del mensaje proactivo:\n  [emoji] <b>Título breve</b>\n  Cuerpo en 2-3 líneas máximo.\n  💡 Sugerencia accionable (opcional).\n</skill>\n\n[SAFETY & GUARDRAILS]\n- No alucines datos personales. Si no lo sabes, usa READ. Si no hay resultado, admítelo.\n- Actúa siempre en el mejor interés de la productividad de Alejandro.\n\n[REGLAS GLOBALES]\n- Preguntas de conocimiento general → responde DIRECTAMENTE, sin herramientas.\n- Límite de caracteres: NUNCA superes 3000 caracteres por mensaje.\n- No pienses en voz alta. Da la respuesta final de forma inmediata.",
             "maxIterations": 20
@@ -1405,7 +1338,6 @@
         "parameters": {
           "httpMethod": "POST",
           "path": "9d4029b4-7fcf-490a-a04f-73c08b3809fe",
-          "responseMode": "responseNode",
           "options": {}
         },
         "type": "n8n-nodes-base.webhook",
@@ -1417,54 +1349,6 @@
         "id": "64afdb18-88c9-49ba-9fa5-3d37bc451450",
         "name": "Webhook",
         "webhookId": "9d4029b4-7fcf-490a-a04f-73c08b3809fe"
-      },
-      {
-        "parameters": {
-          "conditions": {
-            "options": {
-              "caseSensitive": true,
-              "leftValue": "",
-              "typeValidation": "strict",
-              "version": 3
-            },
-            "conditions": [
-              {
-                "id": "69f75d81-9fca-408c-9024-8daa53e8cc60",
-                "leftValue": "={{ $if($('Webhook').isExecuted, \"siri\", \"telegram\") }}",
-                "rightValue": "siri",
-                "operator": {
-                  "type": "string",
-                  "operation": "equals"
-                }
-              }
-            ],
-            "combinator": "and"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 2.3,
-        "position": [
-          352,
-          -144
-        ],
-        "id": "a77b6e59-6d2d-4b46-b9c8-d57273b7810c",
-        "name": "If"
-      },
-      {
-        "parameters": {
-          "respondWith": "json",
-          "responseBody": "={\n  \"output\": \"{{ $json.output }}\"\n}",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.respondToWebhook",
-        "typeVersion": 1.5,
-        "position": [
-          896,
-          -336
-        ],
-        "id": "fc3d124d-5843-4111-9ab9-212b5ec8ea38",
-        "name": "Respond to Webhook"
       },
       {
         "parameters": {
@@ -1669,7 +1553,7 @@
         "main": [
           [
             {
-              "node": "If",
+              "node": "Send a text message",
               "type": "main",
               "index": 0
             }
@@ -1826,24 +1710,6 @@
           ]
         ]
       },
-      "If": {
-        "main": [
-          [
-            {
-              "node": "Respond to Webhook",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Send a text message",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Insert rows in a table in Postgres": {
         "ai_tool": [
           [
@@ -1917,7 +1783,7 @@
       }
     },
     "authors": "Alejandro Rico Garcia",
-    "name": "Version 2bb5c5f3",
+    "name": "Version 28933ddf",
     "description": "",
     "autosaved": true
   },
