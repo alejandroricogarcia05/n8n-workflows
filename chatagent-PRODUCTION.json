@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-05T16:27:04.252Z",
+  "updatedAt": "2026-04-06T15:14:48.751Z",
   "createdAt": "2026-02-16T12:32:31.204Z",
   "id": "u12CayJegxExkV8I",
   "name": "ChatAgent",
@@ -37,8 +37,8 @@
         "promptType": "define",
         "text": "====[CONTEXTO DEL EVENTO]\nOrigen: {{ $prevNode.name === 'Telegram Trigger' ? 'Telegram_Texto' : ($prevNode.name === 'Strava Trigger' ? 'API_Strava' : ($prevNode.name === 'Schedule Trigger' ? 'Trigger_2h' : 'Siri_Voz')) }}\n\n[CONTENIDO]\n{{ $prevNode.name === 'Telegram Trigger' ? $json.message.text : ($prevNode.name === 'Strava Trigger' ? JSON.stringify($json) : ($prevNode.name === 'Schedule Trigger' ? 'Ejecuta revisión proactiva programada. Consulta memoria, clima y calendario. Si no hay nada relevante, no envíes nada.' : JSON.stringify($json.body))) }}",
         "options": {
-          "systemMessage": "=[IDENTITY & SOUL]\nEres Paco, el asistente personal de IA de Alejandro (Alcobendas). Arquitectura inspirada en OpenClaw. Tu misión: optimizar su vida, actuar como su segundo cerebro y gestionar su información con máxima eficiencia.\nTono: Directo, brillante, proactivo. Cercano y de confianza, pero siempre de alto rendimiento.\n\n[RUNTIME & ENVIRONMENT]\n- Fecha y Hora Local: {{ $now.setZone('Europe/Madrid').toFormat('cccc, dd MMMM yyyy, HH:mm') }}\n- Zona Horaria: Europe/Madrid (CET)\n\n[TOOLING & MEMORY OPERATIONS]\nTienes acceso a PostgreSQL (tabla: memoria_paco). La memoria NO se inyecta por defecto.\n- READ: Si Alejandro pregunta por contexto, gustos, historial o datos pasados → ejecuta SQL antes de responder.\n- WRITE: Si el usuario da información útil para el futuro → guárdala proactivamente sin pedir permiso. Confírmalo brevemente.\n- WEB_SEARCH: Úsala SIEMPRE para información en tiempo real (clima, noticias, resultados).\n\n[SKILLS & ROUTING]\n\n<skill name=\"Telegram_Texto\">\nAsistente conversacional y ejecutivo. Responde dudas y organiza ideas.\nFORMATO OBLIGATORIO PARA TELEGRAM:\n1. Negrita: <b>texto</b>. PROHIBIDO asteriscos (**).\n2. PROHIBIDO tablas Markdown (símbolo |).\n3. Horarios o datos estructurados → listas con emojis (📅 Lunes: 16:00 - Rodaje).\n4. Conciso. Saltos de línea entre bloques para lectura móvil.\n</skill>\n\n<skill name=\"API_Strava\">\nAnalista de rendimiento. Input = JSON crudo.\n1. Extrae: deporte, distancia (km), tiempo (min), elevación.\n2. Guarda el hito en memoria (WRITE).\n3. Genera reporte ejecutivo motivador con las métricas.\n</skill>\n\n<skill name=\"Trigger_2h\">\nSe ejecuta automáticamente cada 2 horas en segundo plano.\nREGLA CRÍTICA — FILTRO DE RELEVANCIA:\nAntes de enviar cualquier mensaje, evalúa con criterio estricto si cumple AL MENOS UNO de estos criterios:\n  ✅ Alerta meteorológica relevante (lluvia intensa, calor extremo, nieve) que afecte sus planes.\n  ✅ Noticia de alto impacto en sus áreas de interés (tecnología, IA, negocios, deporte).\n  ✅ Recordatorio de un hito o tarea crítica próxima (en las siguientes 4h) detectada en memoria.\n  ✅ Insight accionable basado en sus datos pasados (ej: \"Llevas 5 días sin entrenar, ayer anotaste que querías mantener racha\").\n  ✅ No mandes mensajes en horario nocturno, de 21 a 9.\n  ✅ Oportunidad o información que genuinamente cambiaría algo en su día.\n\nSi NINGÚN criterio se cumple → NO envíes ningún mensaje. Silencio total.\nSi SÍ se cumple → Envía un mensaje ultraconciso (máx. 5 líneas), con emoji de contexto y acción sugerida si aplica.\nFormato del mensaje proactivo:\n  [emoji] <b>Título breve</b>\n  Cuerpo en 2-3 líneas máximo.\n  💡 Sugerencia accionable (opcional).\n</skill>\n\n[SAFETY & GUARDRAILS]\n- No alucines datos personales. Si no lo sabes, usa READ. Si no hay resultado, admítelo.\n- Actúa siempre en el mejor interés de la productividad de Alejandro.\n\n[REGLAS GLOBALES]\n- Preguntas de conocimiento general → responde DIRECTAMENTE, sin herramientas.\n- Límite de caracteres: NUNCA superes 3000 caracteres por mensaje.\n- No pienses en voz alta. Da la respuesta final de forma inmediata.",
-          "maxIterations": 20
+          "systemMessage": "==[IDENTITY & SOUL]\nEres Paco, el asistente personal de IA de Alejandro (Alcobendas). Arquitectura inspirada en OpenClaw. Tu misión: optimizar su vida, actuar como su segundo cerebro y gestionar su información con máxima eficiencia.\nTono: Directo, brillante, proactivo. Cercano y de confianza, pero siempre de alto rendimiento.\n\n[RUNTIME & ENVIRONMENT]\n- Fecha y Hora Local: {{ $now.setZone('Europe/Madrid').toFormat('cccc, dd MMMM yyyy, HH:mm') }}\n- Zona Horaria: Europe/Madrid (CET)\n\n[MEMORY OPERATIONS (PostgreSQL)]\nTienes acceso a la tabla 'memoria_paco'. Eres el guardián de su contexto.\n- READ (Select rows): Úsala SIEMPRE antes de responder si Alejandro pregunta por sus gustos, historial, equipo, universidad o datos pasados.\n- WRITE (Insert rows): Si en la conversación Alejandro menciona un dato nuevo y relevante sobre sí mismo (ej: \"Me duele la rodilla\", \"Tengo examen el martes\"), guárdalo proactivamente en la base de datos sin pedir permiso.\n[REGLA DE MEMORIA OBSIDIAN]\nTienes acceso a mis notas personales y apuntes de la universidad mediante la herramienta Memoria_Obsidian.\n\nSi te pregunto algo sobre Ingeniería del Software, temas personales o académicos, consulta la herramienta SIEMPRE antes de responder.\n\nSi encuentras la información, cítala de forma natural (ej: \"Según tus notas de Ingeniería...\").\n\nSi la búsqueda no devuelve nada, dímelo y responde con tu conocimiento general.\n[SKILLS & ROUTING]\n\n<skill name=\"Telegram_Texto\">\nFORMATO OBLIGATORIO PARA TELEGRAM:\n1. Usa HTML básico (<b>texto</b>, <i>texto</i>).\n2. PROHIBIDO usar Markdown (**, _, #, |). Si usas Markdown, el bot fallará al enviar el mensaje.\n3. Para listas o datos estructurados usa emojis (📅 Lunes: 16:00 - Rodaje).\n4. Sé extremadamente conciso. Evita los párrafos largos.\n</skill>\n\n<skill name=\"API_Strava\">\nCuando recibas datos de Strava, extrae métricas clave y guarda un resumen en la base de datos (WRITE). Luego, genera un reporte ejecutivo para Alejandro.\n</skill>\n\n<skill name=\"Trigger_2h\">\nREGLA CRÍTICA PARA REVISIONES PROACTIVAS:\nSolo envía un mensaje a Alejandro si se cumple UNO de estos criterios:\n  ✅ Alerta meteorológica severa que afecte Alcobendas en las próximas 6h.\n  ✅ Recordatorio crítico de un evento en su calendario para las próximas 4h.\n  ✅ Insight accionable importante (ej: \"Hace 3 días que no registras entreno\").\nSi NO hay nada urgente, NO RESPONDAS NADA. Silencio total.\nSi hay algo urgente, el formato será:\n[Emoji] <b>Título breve</b>\nCuerpo en 2 líneas.\n💡 Acción sugerida.\n</skill>\n\n[SAFETY & GUARDRAILS]\n- NUNCA inventes o alucines datos personales de Alejandro. Si no lo sabes tras buscar en la base de datos, admítelo.\n- Para conocimiento general, responde directamente.\n- No incluyas procesos de pensamiento en la respuesta final.",
+          "maxIterations": 5
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -58,7 +58,7 @@
     {
       "parameters": {
         "chatId": "=1828879064",
-        "text": "={{ $json.output.replace(/<think>[\\s\\S]*?<\\/think>/g, '').replace(/<(?!\\/?(b|i|u|s|code|pre|a|strong|em)(>|\\s))/gi, '&lt;').trim().substring(0, 4000) }}",
+        "text": "=={{ $json.output.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/&lt;b&gt;/g, '<b>').replace(/&lt;\\/b&gt;/g, '</b>').replace(/&lt;i&gt;/g, '<i>').replace(/&lt;\\/i&gt;/g, '</i>') }}",
         "additionalFields": {
           "appendAttribution": false,
           "parse_mode": "HTML"
@@ -67,8 +67,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        976,
-        -80
+        944,
+        -192
       ],
       "id": "bdbe56e5-4b0a-43e1-a8bb-f9fb0b61c695",
       "name": "Send a text message",
@@ -240,51 +240,6 @@
     },
     {
       "parameters": {
-        "descriptionType": "manual",
-        "toolDescription": "Insert row in Data tableUsa esta herramienta SOLO para guardar información personal, preferencias, datos de salud, o detalles del trabajo de Alejandro que sean relevantes para el futuro. NO guardes conversaciones triviales o saludos. Resume el dato en una frase clara y concisa (ej: 'A Alejandro le duele el isquio izquierdo' o 'Su equipo favorito es el Rayo').",
-        "dataTableId": {
-          "__rl": true,
-          "value": "GFcPFJiUtXAbX5pn",
-          "mode": "list",
-          "cachedResultName": "Memoria_Paco",
-          "cachedResultUrl": "/projects/8TlqgFtyNbA80VNg/datatables/GFcPFJiUtXAbX5pn"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "Dato": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Dato', `Aqui apuntas los datos mas relevantes\n`, 'string') }}"
-          },
-          "matchingColumns": [
-            "Dato"
-          ],
-          "schema": [
-            {
-              "id": "Dato",
-              "displayName": "Dato",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "readOnly": false,
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.dataTableTool",
-      "typeVersion": 1.1,
-      "position": [
-        752,
-        608
-      ],
-      "id": "807aed74-df61-4fa2-8df5-2e75c7c6f959",
-      "name": "Insert row in Data table"
-    },
-    {
-      "parameters": {
         "event": "create",
         "options": {}
       },
@@ -441,80 +396,6 @@
     },
     {
       "parameters": {
-        "descriptionType": "manual",
-        "toolDescription": "Herramienta para GUARDAR nuevos recuerdos de Alejandro. Úsala SOLO cuando él te cuente algo nuevo e importante sobre él. Optimiza los recursos y no guardes recuerdos repetidos o poco importantes, solo aquellos que vayan a hacer que mejores a largo plazo.\nHerramienta obligatoria para GUARDAR nuevos recuerdos de Alejandro. Úsala SOLO cuando él te pida explícitamente que recuerdes algo o te cuente un dato nuevo importante. \nDebes proporcionar los datos con estos nombres de columna exactos:\n- dato: (El recuerdo completo, ej: \"A Alejandro le gustan los macarrones\").\n- categoria: (Una sola palabra, ej: \"comida\", \"deporte\", \"personal\").",
-        "schema": {
-          "__rl": true,
-          "mode": "list",
-          "value": "public"
-        },
-        "table": {
-          "__rl": true,
-          "value": "memoria_paco",
-          "mode": "list",
-          "cachedResultName": "memoria_paco"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "categoria": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('categoria', ``, 'string') }}",
-            "dato": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('dato', ``, 'string') }}"
-          },
-          "matchingColumns": [
-            "id"
-          ],
-          "schema": [
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "dato",
-              "displayName": "dato",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "categoria",
-              "displayName": "categoria",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgresTool",
-      "typeVersion": 2.6,
-      "position": [
-        -64,
-        704
-      ],
-      "id": "e1d095bf-d4d2-417b-9ede-1a6bf04680c1",
-      "name": "Insert rows in a table in Postgres",
-      "credentials": {
-        "postgres": {
-          "id": "qBUlViRVRXIdibki",
-          "name": "Postgres account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
@@ -594,25 +475,6 @@
     },
     {
       "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
-      "typeVersion": 1,
-      "position": [
-        -352,
-        512
-      ],
-      "id": "46c686ef-af25-42fa-97ff-31cefc3a012a",
-      "name": "DeepSeek Chat Model",
-      "credentials": {
-        "deepSeekApi": {
-          "id": "XC1rpn87e0AY3JU9",
-          "name": "DeepSeek account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "sessionIdType": "customKey",
         "sessionKey": "1828879064"
       },
@@ -624,6 +486,81 @@
       ],
       "id": "77e0f574-af6d-4f16-9bf2-a656a5fd9dbb",
       "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "model": "anthropic/claude-sonnet-4.6",
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        1248
+      ],
+      "id": "26e8e74a-6b3d-487e-ade0-e9ee98dea317",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "kFHe6UWFt3ZGNgPI",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "topK": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1.1,
+      "position": [
+        -688,
+        896
+      ],
+      "id": "6e3dfcfe-5060-479e-ac35-a691bc7ca744",
+      "name": "Answer questions with a vector store"
+    },
+    {
+      "parameters": {
+        "tableName": "memoria_vectorial",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        -1216,
+        896
+      ],
+      "id": "a39d9782-8605-4c03-8bda-5c2ad5f43883",
+      "name": "Postgres PGVector Store",
+      "credentials": {
+        "postgres": {
+          "id": "qBUlViRVRXIdibki",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsHuggingFaceInference",
+      "typeVersion": 1,
+      "position": [
+        -992,
+        1088
+      ],
+      "id": "07066f7e-50a4-4282-a0f0-764a3a37f240",
+      "name": "Embeddings HuggingFace Inference",
+      "credentials": {
+        "huggingFaceApi": {
+          "id": "yjZqtJsoDBtXKdsU",
+          "name": "HuggingFaceApi account"
+        }
+      }
     }
   ],
   "connections": {
@@ -711,17 +648,6 @@
         ]
       ]
     },
-    "Insert row in Data table": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Strava Trigger": {
       "main": [
         [
@@ -799,17 +725,6 @@
         ]
       ]
     },
-    "Insert rows in a table in Postgres": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "SerpAPI": {
       "ai_tool": [
         [
@@ -848,23 +763,55 @@
         ]
       ]
     },
-    "DeepSeek Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Simple Memory": {
       "ai_memory": [
         [
           {
             "node": "AI Agent",
             "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer questions with a vector store": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Postgres PGVector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings HuggingFace Inference": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "ai_embedding",
             "index": 0
           }
         ]
@@ -878,7 +825,7 @@
   },
   "staticData": {
     "node:Strava Trigger": {
-      "webhookId": 339094
+      "webhookId": 339268
     },
     "node:Gmail Trigger": {
       "Gmail Trigger": {
@@ -899,8 +846,8 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "28933ddf-56c9-4b5e-a5ed-4edcc4ab6e5a",
-  "activeVersionId": "28933ddf-56c9-4b5e-a5ed-4edcc4ab6e5a",
+  "versionId": "b4cab1b0-9c3a-4c7c-9c72-e7b85a98eb17",
+  "activeVersionId": "b4cab1b0-9c3a-4c7c-9c72-e7b85a98eb17",
   "triggerCount": 3,
   "shared": [
     {
@@ -912,9 +859,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-04-05T16:27:31.000Z",
-    "createdAt": "2026-04-05T16:27:04.254Z",
-    "versionId": "28933ddf-56c9-4b5e-a5ed-4edcc4ab6e5a",
+    "updatedAt": "2026-04-06T15:14:52.000Z",
+    "createdAt": "2026-04-06T15:14:48.755Z",
+    "versionId": "b4cab1b0-9c3a-4c7c-9c72-e7b85a98eb17",
     "workflowId": "u12CayJegxExkV8I",
     "nodes": [
       {
@@ -948,8 +895,8 @@
           "promptType": "define",
           "text": "====[CONTEXTO DEL EVENTO]\nOrigen: {{ $prevNode.name === 'Telegram Trigger' ? 'Telegram_Texto' : ($prevNode.name === 'Strava Trigger' ? 'API_Strava' : ($prevNode.name === 'Schedule Trigger' ? 'Trigger_2h' : 'Siri_Voz')) }}\n\n[CONTENIDO]\n{{ $prevNode.name === 'Telegram Trigger' ? $json.message.text : ($prevNode.name === 'Strava Trigger' ? JSON.stringify($json) : ($prevNode.name === 'Schedule Trigger' ? 'Ejecuta revisión proactiva programada. Consulta memoria, clima y calendario. Si no hay nada relevante, no envíes nada.' : JSON.stringify($json.body))) }}",
           "options": {
-            "systemMessage": "=[IDENTITY & SOUL]\nEres Paco, el asistente personal de IA de Alejandro (Alcobendas). Arquitectura inspirada en OpenClaw. Tu misión: optimizar su vida, actuar como su segundo cerebro y gestionar su información con máxima eficiencia.\nTono: Directo, brillante, proactivo. Cercano y de confianza, pero siempre de alto rendimiento.\n\n[RUNTIME & ENVIRONMENT]\n- Fecha y Hora Local: {{ $now.setZone('Europe/Madrid').toFormat('cccc, dd MMMM yyyy, HH:mm') }}\n- Zona Horaria: Europe/Madrid (CET)\n\n[TOOLING & MEMORY OPERATIONS]\nTienes acceso a PostgreSQL (tabla: memoria_paco). La memoria NO se inyecta por defecto.\n- READ: Si Alejandro pregunta por contexto, gustos, historial o datos pasados → ejecuta SQL antes de responder.\n- WRITE: Si el usuario da información útil para el futuro → guárdala proactivamente sin pedir permiso. Confírmalo brevemente.\n- WEB_SEARCH: Úsala SIEMPRE para información en tiempo real (clima, noticias, resultados).\n\n[SKILLS & ROUTING]\n\n<skill name=\"Telegram_Texto\">\nAsistente conversacional y ejecutivo. Responde dudas y organiza ideas.\nFORMATO OBLIGATORIO PARA TELEGRAM:\n1. Negrita: <b>texto</b>. PROHIBIDO asteriscos (**).\n2. PROHIBIDO tablas Markdown (símbolo |).\n3. Horarios o datos estructurados → listas con emojis (📅 Lunes: 16:00 - Rodaje).\n4. Conciso. Saltos de línea entre bloques para lectura móvil.\n</skill>\n\n<skill name=\"API_Strava\">\nAnalista de rendimiento. Input = JSON crudo.\n1. Extrae: deporte, distancia (km), tiempo (min), elevación.\n2. Guarda el hito en memoria (WRITE).\n3. Genera reporte ejecutivo motivador con las métricas.\n</skill>\n\n<skill name=\"Trigger_2h\">\nSe ejecuta automáticamente cada 2 horas en segundo plano.\nREGLA CRÍTICA — FILTRO DE RELEVANCIA:\nAntes de enviar cualquier mensaje, evalúa con criterio estricto si cumple AL MENOS UNO de estos criterios:\n  ✅ Alerta meteorológica relevante (lluvia intensa, calor extremo, nieve) que afecte sus planes.\n  ✅ Noticia de alto impacto en sus áreas de interés (tecnología, IA, negocios, deporte).\n  ✅ Recordatorio de un hito o tarea crítica próxima (en las siguientes 4h) detectada en memoria.\n  ✅ Insight accionable basado en sus datos pasados (ej: \"Llevas 5 días sin entrenar, ayer anotaste que querías mantener racha\").\n  ✅ No mandes mensajes en horario nocturno, de 21 a 9.\n  ✅ Oportunidad o información que genuinamente cambiaría algo en su día.\n\nSi NINGÚN criterio se cumple → NO envíes ningún mensaje. Silencio total.\nSi SÍ se cumple → Envía un mensaje ultraconciso (máx. 5 líneas), con emoji de contexto y acción sugerida si aplica.\nFormato del mensaje proactivo:\n  [emoji] <b>Título breve</b>\n  Cuerpo en 2-3 líneas máximo.\n  💡 Sugerencia accionable (opcional).\n</skill>\n\n[SAFETY & GUARDRAILS]\n- No alucines datos personales. Si no lo sabes, usa READ. Si no hay resultado, admítelo.\n- Actúa siempre en el mejor interés de la productividad de Alejandro.\n\n[REGLAS GLOBALES]\n- Preguntas de conocimiento general → responde DIRECTAMENTE, sin herramientas.\n- Límite de caracteres: NUNCA superes 3000 caracteres por mensaje.\n- No pienses en voz alta. Da la respuesta final de forma inmediata.",
-            "maxIterations": 20
+            "systemMessage": "==[IDENTITY & SOUL]\nEres Paco, el asistente personal de IA de Alejandro (Alcobendas). Arquitectura inspirada en OpenClaw. Tu misión: optimizar su vida, actuar como su segundo cerebro y gestionar su información con máxima eficiencia.\nTono: Directo, brillante, proactivo. Cercano y de confianza, pero siempre de alto rendimiento.\n\n[RUNTIME & ENVIRONMENT]\n- Fecha y Hora Local: {{ $now.setZone('Europe/Madrid').toFormat('cccc, dd MMMM yyyy, HH:mm') }}\n- Zona Horaria: Europe/Madrid (CET)\n\n[MEMORY OPERATIONS (PostgreSQL)]\nTienes acceso a la tabla 'memoria_paco'. Eres el guardián de su contexto.\n- READ (Select rows): Úsala SIEMPRE antes de responder si Alejandro pregunta por sus gustos, historial, equipo, universidad o datos pasados.\n- WRITE (Insert rows): Si en la conversación Alejandro menciona un dato nuevo y relevante sobre sí mismo (ej: \"Me duele la rodilla\", \"Tengo examen el martes\"), guárdalo proactivamente en la base de datos sin pedir permiso.\n[REGLA DE MEMORIA OBSIDIAN]\nTienes acceso a mis notas personales y apuntes de la universidad mediante la herramienta Memoria_Obsidian.\n\nSi te pregunto algo sobre Ingeniería del Software, temas personales o académicos, consulta la herramienta SIEMPRE antes de responder.\n\nSi encuentras la información, cítala de forma natural (ej: \"Según tus notas de Ingeniería...\").\n\nSi la búsqueda no devuelve nada, dímelo y responde con tu conocimiento general.\n[SKILLS & ROUTING]\n\n<skill name=\"Telegram_Texto\">\nFORMATO OBLIGATORIO PARA TELEGRAM:\n1. Usa HTML básico (<b>texto</b>, <i>texto</i>).\n2. PROHIBIDO usar Markdown (**, _, #, |). Si usas Markdown, el bot fallará al enviar el mensaje.\n3. Para listas o datos estructurados usa emojis (📅 Lunes: 16:00 - Rodaje).\n4. Sé extremadamente conciso. Evita los párrafos largos.\n</skill>\n\n<skill name=\"API_Strava\">\nCuando recibas datos de Strava, extrae métricas clave y guarda un resumen en la base de datos (WRITE). Luego, genera un reporte ejecutivo para Alejandro.\n</skill>\n\n<skill name=\"Trigger_2h\">\nREGLA CRÍTICA PARA REVISIONES PROACTIVAS:\nSolo envía un mensaje a Alejandro si se cumple UNO de estos criterios:\n  ✅ Alerta meteorológica severa que afecte Alcobendas en las próximas 6h.\n  ✅ Recordatorio crítico de un evento en su calendario para las próximas 4h.\n  ✅ Insight accionable importante (ej: \"Hace 3 días que no registras entreno\").\nSi NO hay nada urgente, NO RESPONDAS NADA. Silencio total.\nSi hay algo urgente, el formato será:\n[Emoji] <b>Título breve</b>\nCuerpo en 2 líneas.\n💡 Acción sugerida.\n</skill>\n\n[SAFETY & GUARDRAILS]\n- NUNCA inventes o alucines datos personales de Alejandro. Si no lo sabes tras buscar en la base de datos, admítelo.\n- Para conocimiento general, responde directamente.\n- No incluyas procesos de pensamiento en la respuesta final.",
+            "maxIterations": 5
           }
         },
         "type": "@n8n/n8n-nodes-langchain.agent",
@@ -969,7 +916,7 @@
       {
         "parameters": {
           "chatId": "=1828879064",
-          "text": "={{ $json.output.replace(/<think>[\\s\\S]*?<\\/think>/g, '').replace(/<(?!\\/?(b|i|u|s|code|pre|a|strong|em)(>|\\s))/gi, '&lt;').trim().substring(0, 4000) }}",
+          "text": "=={{ $json.output.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/&lt;b&gt;/g, '<b>').replace(/&lt;\\/b&gt;/g, '</b>').replace(/&lt;i&gt;/g, '<i>').replace(/&lt;\\/i&gt;/g, '</i>') }}",
           "additionalFields": {
             "appendAttribution": false,
             "parse_mode": "HTML"
@@ -978,8 +925,8 @@
         "type": "n8n-nodes-base.telegram",
         "typeVersion": 1.2,
         "position": [
-          976,
-          -80
+          944,
+          -192
         ],
         "id": "bdbe56e5-4b0a-43e1-a8bb-f9fb0b61c695",
         "name": "Send a text message",
@@ -1151,51 +1098,6 @@
       },
       {
         "parameters": {
-          "descriptionType": "manual",
-          "toolDescription": "Insert row in Data tableUsa esta herramienta SOLO para guardar información personal, preferencias, datos de salud, o detalles del trabajo de Alejandro que sean relevantes para el futuro. NO guardes conversaciones triviales o saludos. Resume el dato en una frase clara y concisa (ej: 'A Alejandro le duele el isquio izquierdo' o 'Su equipo favorito es el Rayo').",
-          "dataTableId": {
-            "__rl": true,
-            "value": "GFcPFJiUtXAbX5pn",
-            "mode": "list",
-            "cachedResultName": "Memoria_Paco",
-            "cachedResultUrl": "/projects/8TlqgFtyNbA80VNg/datatables/GFcPFJiUtXAbX5pn"
-          },
-          "columns": {
-            "mappingMode": "defineBelow",
-            "value": {
-              "Dato": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Dato', `Aqui apuntas los datos mas relevantes\n`, 'string') }}"
-            },
-            "matchingColumns": [
-              "Dato"
-            ],
-            "schema": [
-              {
-                "id": "Dato",
-                "displayName": "Dato",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "readOnly": false,
-                "removed": false
-              }
-            ],
-            "attemptToConvertTypes": false,
-            "convertFieldsToString": false
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.dataTableTool",
-        "typeVersion": 1.1,
-        "position": [
-          752,
-          608
-        ],
-        "id": "807aed74-df61-4fa2-8df5-2e75c7c6f959",
-        "name": "Insert row in Data table"
-      },
-      {
-        "parameters": {
           "event": "create",
           "options": {}
         },
@@ -1352,80 +1254,6 @@
       },
       {
         "parameters": {
-          "descriptionType": "manual",
-          "toolDescription": "Herramienta para GUARDAR nuevos recuerdos de Alejandro. Úsala SOLO cuando él te cuente algo nuevo e importante sobre él. Optimiza los recursos y no guardes recuerdos repetidos o poco importantes, solo aquellos que vayan a hacer que mejores a largo plazo.\nHerramienta obligatoria para GUARDAR nuevos recuerdos de Alejandro. Úsala SOLO cuando él te pida explícitamente que recuerdes algo o te cuente un dato nuevo importante. \nDebes proporcionar los datos con estos nombres de columna exactos:\n- dato: (El recuerdo completo, ej: \"A Alejandro le gustan los macarrones\").\n- categoria: (Una sola palabra, ej: \"comida\", \"deporte\", \"personal\").",
-          "schema": {
-            "__rl": true,
-            "mode": "list",
-            "value": "public"
-          },
-          "table": {
-            "__rl": true,
-            "value": "memoria_paco",
-            "mode": "list",
-            "cachedResultName": "memoria_paco"
-          },
-          "columns": {
-            "mappingMode": "defineBelow",
-            "value": {
-              "categoria": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('categoria', ``, 'string') }}",
-              "dato": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('dato', ``, 'string') }}"
-            },
-            "matchingColumns": [
-              "id"
-            ],
-            "schema": [
-              {
-                "id": "id",
-                "displayName": "id",
-                "required": false,
-                "defaultMatch": true,
-                "display": true,
-                "type": "number",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "dato",
-                "displayName": "dato",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true
-              },
-              {
-                "id": "categoria",
-                "displayName": "categoria",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true
-              }
-            ],
-            "attemptToConvertTypes": false,
-            "convertFieldsToString": false
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.postgresTool",
-        "typeVersion": 2.6,
-        "position": [
-          -64,
-          704
-        ],
-        "id": "e1d095bf-d4d2-417b-9ede-1a6bf04680c1",
-        "name": "Insert rows in a table in Postgres",
-        "credentials": {
-          "postgres": {
-            "id": "qBUlViRVRXIdibki",
-            "name": "Postgres account"
-          }
-        }
-      },
-      {
-        "parameters": {
           "options": {}
         },
         "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
@@ -1505,25 +1333,6 @@
       },
       {
         "parameters": {
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
-        "typeVersion": 1,
-        "position": [
-          -352,
-          512
-        ],
-        "id": "46c686ef-af25-42fa-97ff-31cefc3a012a",
-        "name": "DeepSeek Chat Model",
-        "credentials": {
-          "deepSeekApi": {
-            "id": "XC1rpn87e0AY3JU9",
-            "name": "DeepSeek account"
-          }
-        }
-      },
-      {
-        "parameters": {
           "sessionIdType": "customKey",
           "sessionKey": "1828879064"
         },
@@ -1535,6 +1344,81 @@
         ],
         "id": "77e0f574-af6d-4f16-9bf2-a656a5fd9dbb",
         "name": "Simple Memory"
+      },
+      {
+        "parameters": {
+          "model": "anthropic/claude-sonnet-4.6",
+          "options": {
+            "temperature": 0.2
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+        "typeVersion": 1,
+        "position": [
+          -144,
+          1248
+        ],
+        "id": "26e8e74a-6b3d-487e-ade0-e9ee98dea317",
+        "name": "OpenRouter Chat Model",
+        "credentials": {
+          "openRouterApi": {
+            "id": "kFHe6UWFt3ZGNgPI",
+            "name": "OpenRouter account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "topK": 10
+        },
+        "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+        "typeVersion": 1.1,
+        "position": [
+          -688,
+          896
+        ],
+        "id": "6e3dfcfe-5060-479e-ac35-a691bc7ca744",
+        "name": "Answer questions with a vector store"
+      },
+      {
+        "parameters": {
+          "tableName": "memoria_vectorial",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+        "typeVersion": 1.3,
+        "position": [
+          -1216,
+          896
+        ],
+        "id": "a39d9782-8605-4c03-8bda-5c2ad5f43883",
+        "name": "Postgres PGVector Store",
+        "credentials": {
+          "postgres": {
+            "id": "qBUlViRVRXIdibki",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "modelName": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.embeddingsHuggingFaceInference",
+        "typeVersion": 1,
+        "position": [
+          -992,
+          1088
+        ],
+        "id": "07066f7e-50a4-4282-a0f0-764a3a37f240",
+        "name": "Embeddings HuggingFace Inference",
+        "credentials": {
+          "huggingFaceApi": {
+            "id": "yjZqtJsoDBtXKdsU",
+            "name": "HuggingFaceApi account"
+          }
+        }
       }
     ],
     "connections": {
@@ -1622,17 +1506,6 @@
           ]
         ]
       },
-      "Insert row in Data table": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Strava Trigger": {
         "main": [
           [
@@ -1710,17 +1583,6 @@
           ]
         ]
       },
-      "Insert rows in a table in Postgres": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "SerpAPI": {
         "ai_tool": [
           [
@@ -1759,17 +1621,6 @@
           ]
         ]
       },
-      "DeepSeek Chat Model": {
-        "ai_languageModel": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_languageModel",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Simple Memory": {
         "ai_memory": [
           [
@@ -1780,10 +1631,53 @@
             }
           ]
         ]
+      },
+      "OpenRouter Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            },
+            {
+              "node": "Answer questions with a vector store",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Answer questions with a vector store": {
+        "ai_tool": [
+          []
+        ]
+      },
+      "Postgres PGVector Store": {
+        "ai_vectorStore": [
+          [
+            {
+              "node": "Answer questions with a vector store",
+              "type": "ai_vectorStore",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Embeddings HuggingFace Inference": {
+        "ai_embedding": [
+          [
+            {
+              "node": "Postgres PGVector Store",
+              "type": "ai_embedding",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "authors": "Alejandro Rico Garcia",
-    "name": "Version 28933ddf",
+    "name": "Version b4cab1b0",
     "description": "",
     "autosaved": true
   },
