@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-06T15:14:48.751Z",
+  "updatedAt": "2026-04-07T10:52:35.894Z",
   "createdAt": "2026-02-16T12:32:31.204Z",
   "id": "u12CayJegxExkV8I",
   "name": "ChatAgent",
@@ -235,69 +235,6 @@
         "googleCalendarOAuth2Api": {
           "id": "RKNDWKhI7S8vrj3R",
           "name": "Google Calendar account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "event": "create",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.stravaTrigger",
-      "typeVersion": 1,
-      "position": [
-        -400,
-        -272
-      ],
-      "id": "45162388-ada0-4089-88e9-458f11d21883",
-      "name": "Strava Trigger",
-      "webhookId": "3555c9df-7b7f-4a6c-b5f5-4b78215ecc58",
-      "credentials": {
-        "stravaOAuth2Api": {
-          "id": "Sw6RPq7ODKIQzbBK",
-          "name": "Strava account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "descriptionType": "manual",
-        "toolDescription": "Puedes ver todos mis datos de strva",
-        "operation": "get",
-        "activityId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Activity_ID', `Aqui tienes que poner el id de la actividad`, 'string') }}"
-      },
-      "type": "n8n-nodes-base.stravaTool",
-      "typeVersion": 1.1,
-      "position": [
-        1104,
-        608
-      ],
-      "id": "e3b69a76-48c0-48ef-9acc-411ba499044b",
-      "name": "Get an activity in Strava",
-      "credentials": {
-        "stravaOAuth2Api": {
-          "id": "Sw6RPq7ODKIQzbBK",
-          "name": "Strava account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "getAll",
-        "limit": 5
-      },
-      "type": "n8n-nodes-base.stravaTool",
-      "typeVersion": 1.1,
-      "position": [
-        1296,
-        496
-      ],
-      "id": "521ce073-c965-42f8-914f-9818eaeda84e",
-      "name": "Get many activities in Strava",
-      "credentials": {
-        "stravaOAuth2Api": {
-          "id": "Sw6RPq7ODKIQzbBK",
-          "name": "Strava account"
         }
       }
     },
@@ -561,6 +498,90 @@
           "name": "HuggingFaceApi account"
         }
       }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Insert rows in a table in Postgres",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "memoria_paco",
+          "mode": "list",
+          "cachedResultName": "memoria_paco"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "dato": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('dato', ``, 'string') }}",
+            "categoria": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('categoria', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "dato",
+              "displayName": "dato",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "categoria",
+              "displayName": "categoria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha_creacion",
+              "displayName": "fecha_creacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        -64,
+        800
+      ],
+      "id": "5ee0fc65-7870-48b5-a31e-a3997c88c9b5",
+      "name": "Insert rows in a table in Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "qBUlViRVRXIdibki",
+          "name": "Postgres account"
+        }
+      }
     }
   ],
   "connections": {
@@ -638,39 +659,6 @@
       ]
     },
     "Update an event in Google Calendar": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Strava Trigger": {
-      "main": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get an activity in Strava": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get many activities in Strava": {
       "ai_tool": [
         [
           {
@@ -792,7 +780,13 @@
     },
     "Answer questions with a vector store": {
       "ai_tool": [
-        []
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
       ]
     },
     "Postgres PGVector Store": {
@@ -816,6 +810,17 @@
           }
         ]
       ]
+    },
+    "Insert rows in a table in Postgres": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -824,9 +829,7 @@
     "availableInMCP": false
   },
   "staticData": {
-    "node:Strava Trigger": {
-      "webhookId": 339268
-    },
+    "node:Strava Trigger": {},
     "node:Gmail Trigger": {
       "Gmail Trigger": {
         "lastTimeChecked": 1771432292,
@@ -846,9 +849,9 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "b4cab1b0-9c3a-4c7c-9c72-e7b85a98eb17",
-  "activeVersionId": "b4cab1b0-9c3a-4c7c-9c72-e7b85a98eb17",
-  "triggerCount": 3,
+  "versionId": "9901717d-12aa-458b-b0f8-fb2be364a530",
+  "activeVersionId": "9901717d-12aa-458b-b0f8-fb2be364a530",
+  "triggerCount": 2,
   "shared": [
     {
       "updatedAt": "2026-02-16T12:32:31.210Z",
@@ -859,9 +862,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-04-06T15:14:52.000Z",
-    "createdAt": "2026-04-06T15:14:48.755Z",
-    "versionId": "b4cab1b0-9c3a-4c7c-9c72-e7b85a98eb17",
+    "updatedAt": "2026-04-07T10:52:37.000Z",
+    "createdAt": "2026-04-07T10:52:35.895Z",
+    "versionId": "9901717d-12aa-458b-b0f8-fb2be364a530",
     "workflowId": "u12CayJegxExkV8I",
     "nodes": [
       {
@@ -1093,69 +1096,6 @@
           "googleCalendarOAuth2Api": {
             "id": "RKNDWKhI7S8vrj3R",
             "name": "Google Calendar account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "event": "create",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.stravaTrigger",
-        "typeVersion": 1,
-        "position": [
-          -400,
-          -272
-        ],
-        "id": "45162388-ada0-4089-88e9-458f11d21883",
-        "name": "Strava Trigger",
-        "webhookId": "3555c9df-7b7f-4a6c-b5f5-4b78215ecc58",
-        "credentials": {
-          "stravaOAuth2Api": {
-            "id": "Sw6RPq7ODKIQzbBK",
-            "name": "Strava account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "descriptionType": "manual",
-          "toolDescription": "Puedes ver todos mis datos de strva",
-          "operation": "get",
-          "activityId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Activity_ID', `Aqui tienes que poner el id de la actividad`, 'string') }}"
-        },
-        "type": "n8n-nodes-base.stravaTool",
-        "typeVersion": 1.1,
-        "position": [
-          1104,
-          608
-        ],
-        "id": "e3b69a76-48c0-48ef-9acc-411ba499044b",
-        "name": "Get an activity in Strava",
-        "credentials": {
-          "stravaOAuth2Api": {
-            "id": "Sw6RPq7ODKIQzbBK",
-            "name": "Strava account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "operation": "getAll",
-          "limit": 5
-        },
-        "type": "n8n-nodes-base.stravaTool",
-        "typeVersion": 1.1,
-        "position": [
-          1296,
-          496
-        ],
-        "id": "521ce073-c965-42f8-914f-9818eaeda84e",
-        "name": "Get many activities in Strava",
-        "credentials": {
-          "stravaOAuth2Api": {
-            "id": "Sw6RPq7ODKIQzbBK",
-            "name": "Strava account"
           }
         }
       },
@@ -1419,6 +1359,90 @@
             "name": "HuggingFaceApi account"
           }
         }
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Insert rows in a table in Postgres",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "memoria_paco",
+            "mode": "list",
+            "cachedResultName": "memoria_paco"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "dato": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('dato', ``, 'string') }}",
+              "categoria": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('categoria', ``, 'string') }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "dato",
+                "displayName": "dato",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "categoria",
+                "displayName": "categoria",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_creacion",
+                "displayName": "fecha_creacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": false,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgresTool",
+        "typeVersion": 2.6,
+        "position": [
+          -64,
+          800
+        ],
+        "id": "5ee0fc65-7870-48b5-a31e-a3997c88c9b5",
+        "name": "Insert rows in a table in Postgres",
+        "credentials": {
+          "postgres": {
+            "id": "qBUlViRVRXIdibki",
+            "name": "Postgres account"
+          }
+        }
       }
     ],
     "connections": {
@@ -1496,39 +1520,6 @@
         ]
       },
       "Update an event in Google Calendar": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Strava Trigger": {
-        "main": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Get an activity in Strava": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Get many activities in Strava": {
         "ai_tool": [
           [
             {
@@ -1650,7 +1641,13 @@
       },
       "Answer questions with a vector store": {
         "ai_tool": [
-          []
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
         ]
       },
       "Postgres PGVector Store": {
@@ -1674,10 +1671,21 @@
             }
           ]
         ]
+      },
+      "Insert rows in a table in Postgres": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "authors": "Alejandro Rico Garcia",
-    "name": "Version b4cab1b0",
+    "name": "Version 9901717d",
     "description": "",
     "autosaved": true
   },
