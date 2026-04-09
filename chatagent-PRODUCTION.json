@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-07T10:52:35.894Z",
+  "updatedAt": "2026-04-09T12:35:03.920Z",
   "createdAt": "2026-02-16T12:32:31.204Z",
   "id": "u12CayJegxExkV8I",
   "name": "ChatAgent",
@@ -849,7 +849,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "9901717d-12aa-458b-b0f8-fb2be364a530",
+  "versionId": "777b4af4-fc0a-4358-9c2b-e77b7651ccb5",
   "activeVersionId": "9901717d-12aa-458b-b0f8-fb2be364a530",
   "triggerCount": 2,
   "shared": [
@@ -862,7 +862,7 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-04-07T10:52:37.000Z",
+    "updatedAt": "2026-04-08T18:05:34.000Z",
     "createdAt": "2026-04-07T10:52:35.895Z",
     "versionId": "9901717d-12aa-458b-b0f8-fb2be364a530",
     "workflowId": "u12CayJegxExkV8I",
