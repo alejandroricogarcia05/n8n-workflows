@@ -850,7 +850,7 @@
   },
   "pinData": {},
   "versionId": "777b4af4-fc0a-4358-9c2b-e77b7651ccb5",
-  "activeVersionId": "9901717d-12aa-458b-b0f8-fb2be364a530",
+  "activeVersionId": "777b4af4-fc0a-4358-9c2b-e77b7651ccb5",
   "triggerCount": 2,
   "shared": [
     {
@@ -862,9 +862,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-04-08T18:05:34.000Z",
-    "createdAt": "2026-04-07T10:52:35.895Z",
-    "versionId": "9901717d-12aa-458b-b0f8-fb2be364a530",
+    "updatedAt": "2026-04-10T17:17:26.000Z",
+    "createdAt": "2026-04-09T12:35:03.921Z",
+    "versionId": "777b4af4-fc0a-4358-9c2b-e77b7651ccb5",
     "workflowId": "u12CayJegxExkV8I",
     "nodes": [
       {
@@ -1685,7 +1685,7 @@
       }
     },
     "authors": "Alejandro Rico Garcia",
-    "name": "Version 9901717d",
+    "name": "Version 777b4af4",
     "description": "",
     "autosaved": true
   },
